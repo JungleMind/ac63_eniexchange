@@ -10,12 +10,15 @@ import { ObjectID as OBJECTID} from 'mongodb';
 import { userFormDTO } from './dto/userForm.dto';
 
 import { mailer } from '../utils/sendMail';
+import { LoginUserDTO } from './dto/userLogin.dto';
+import { UserUpdateDTO } from './dto/userUpdate.dto';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
-        private userFabRepository: Repository<User>,        
+        private userFabRepository: Repository<User>,          
+        private jwtService: JwtService,      
         // private jwtService: JwtService,
       ) {}
 
@@ -31,6 +34,14 @@ export class UserService {
             return null}
       }
 
+      async getUserByEmail(email: string): Promise<User | null> {
+        const user = await this.userFabRepository.findOne({where: {email}})
+        if (user){          
+          return user
+        }
+        return null
+      }
+
       async getUserByMatricule(matricule: string): Promise<User | null> {
         const user = await this.userFabRepository.findOne({where: {matricule}})
         if (user){          
@@ -42,7 +53,7 @@ export class UserService {
       async createUSer(body : userFormDTO): Promise<Object> {
         body.password = this.hash(body.password)
         try {
-          const user = this.userFabRepository.create( {...body} as Object ); //casting body as an object because we otherwise get an array
+          const user = this.userFabRepository.create( {...body, reputation: 0} as Object ); //casting body as an object because we otherwise get an array
           await this.userFabRepository.save(user);
 
           const code : string = await this.sendConfirmationMail(user.email);          
@@ -56,7 +67,64 @@ export class UserService {
         }
       }
 
+      async confirmUser(mail: string, code: string, hashedCode?: string) : Promise<User | null> {
+        if(hashedCode){
+        var validCode : Boolean = await brcypt.compare(code, hashedCode)
+          // if (validCode == false){
+          //   const user = await this.getUserByEmail(mail);
+          //   console.log('confimation function: '+ user?.confirmationCode)
+          //   validCode = await brcypt.compare(code, user?.confirmationCode as string)
+          // }
+        }  else {
+          const user = await this.getUserByEmail(mail);
+          console.log('confimation function: '+ user?.confirmationCode)          
+          validCode = await brcypt.compare(code, user?.confirmationCode as string)
+        }      
+        const user : User | null = await this.getUserByEmail(mail)
+          if(!user){
+            throw new HttpException("Please register first", 404) 
+          }
+          if(user.activatedAccount){
+            throw new HttpException("(A.A.A) Account Already Activated", 302) 
+          }
+          if (!validCode) {
+            throw new HttpException("Invalid Credentials", 402)
+          }
+        //   if(user.isCoopMember) {
+        //     const correctCode = await brcypt.compare(code, user.confirmationCode as string)
+        //     if (!correctCode) {
+        //       throw new HttpException("Invalid Credentials", 402)
+        //     }
+        //   }
+        await this.userFabRepository.update({email: mail}, {activatedAccount: true, confirmationCode: null})            
+        const updatedUser : User | null = await this.getUserByEmail(mail)
+        if(updatedUser){
+            updatedUser.password = 'xxx';
+        }
+        return updatedUser;
+      }
 
+
+      async loginUserFab(userInfo: LoginUserDTO) : Promise<Object | null>{
+        const user = await this.getUserByEmail(userInfo.email);
+        if(!user){
+          throw new HttpException("User account not found. Please register first", 404);
+        }
+        if(!await brcypt.compare(userInfo.password, user.password)){          
+          throw new HttpException("Invalid credential", 400);
+        }
+        if(!user.activatedAccount){
+          throw new HttpException("Please activate your account first", 400);
+        }
+        console.log(user);
+        const {password, ...payload} = user;
+        return { access_token: this.jwtService.sign(payload) };
+      }
+
+      async updateUser(userId: ObjectID, userUpdateDto: UserUpdateDTO) : Promise<User | null> {
+        await this.userFabRepository.update(userId, {...userUpdateDto})
+        return this.getUserByID(userId);
+      }
 
       //UTILS FUNCTIONS
       
@@ -66,9 +134,9 @@ export class UserService {
 
       async sendConfirmationMail(mail: string) : Promise<string> {
         const mailConfig = {
-          subject: "SmartA Confirmation Mail",
+          subject: "ENI_Exchange Confirmation Mail",
           code: uuid(),
-          link: "thenext.mg"
+          link: "eni.mg"
         }  
         console.log(mailConfig.code) 
         const code : string = this.hash(mailConfig.code)    

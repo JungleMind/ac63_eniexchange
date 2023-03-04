@@ -1,14 +1,16 @@
 import {IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, MinLength} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional} from '@nestjs/swagger'
+import { ObjectID } from 'typeorm';
 
-export class userFormDTO {
+export class UserUpdateDTO {
     @ApiProperty({
 		example: 'Jhon',
 		description: 'Name of the user',
 	})
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
-    firstName: string
+    firstName?: string
 
     @ApiPropertyOptional({
 		example: 'Doe',
@@ -23,31 +25,50 @@ export class userFormDTO {
 		example: 'Jhon.doe@gmail.com',
 		description: 'Email. Unique (identifier) for every user',
 	})
+    
+    @IsOptional()
     @IsEmail()
-    email: string;
+    email?: string;
 
     @ApiProperty({
 		example: '507f191e',
 		description: 'Password of user, minimun of 8 char',
-	})
+	})    
+    @IsOptional()
     @IsString()
     @MinLength(8)
-    password: string;
-
-    @ApiProperty({
-		example: '2185',
-		description: 'Matriculate number of the student, minimum of 4 char, max 6',
-	})
-    @IsString()
-    @MinLength(4)
-    @MaxLength(6)
-    matricule: string;
+    password?: string;
     
     @ApiProperty({
 		example: 'L1',
 		description: 'Niveau of student',
-	})
+	})    
+    @IsOptional()
     @IsString()
     niveau?: string; 
 
+    @ApiProperty({
+		example: '21',
+		description: 'Reputation level of student',
+	})       
+    @IsOptional()
+    @IsNumber()
+    reputation?: number;
+
+    @ApiPropertyOptional({
+		example: ['21'],
+		description: 'Questiol list of student',
+	})       
+    @IsOptional()
+    @IsString()
+    questions?: ObjectID[];
+
+    
+    @ApiPropertyOptional({
+      example: ['22'],
+      description: 'Answer list of student',
+    })       
+      @IsOptional()
+      @IsString()
+      answers?: ObjectID[];
 }

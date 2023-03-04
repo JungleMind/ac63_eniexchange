@@ -10,11 +10,12 @@ async function bootstrap() {
 	app.useGlobalPipes(new ValidationPipe());
 	app.setGlobalPrefix('api');
 	app.enableCors();
+	dotenv.config();
 
 	if (process.env.NODE_ENV !== 'production') {
 		const document = SwaggerModule.createDocument(
 			app,
-			new DocumentBuilder().setTitle('Smarta Service').setDescription('ENI_Exchange API').setVersion('1.0').build(),
+			new DocumentBuilder().setTitle('ENI_Exchange').setDescription('ENI_Exchange API').setVersion('1.0').build(),
 		);
 		SwaggerModule.setup('api', app, document);
 	}

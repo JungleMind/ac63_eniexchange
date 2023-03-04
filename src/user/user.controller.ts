@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ObjectID } from 'typeorm';
 import { Request, Response } from 'express';
 import { userFormDTO } from './dto/userForm.dto';
 import { UserService } from './user.service';
+import { confirmUserDTO } from './dto/userConfirm.dto';
+import { LoginUserDTO } from './dto/userLogin.dto';
 
 @Controller('user')
 @ApiTags('User')
@@ -73,4 +75,62 @@ export class UserController {
         return data
     }
 
+
+    @Post('/confirm')
+    //DOCUMENTATION
+    @ApiOperation({summary: 'Confirm and Activate user account'}) 
+    @ApiResponse({
+        status: 201,
+        description: 'Ok, no error'
+    })
+    @ApiResponse({
+        status: 401,
+        description: 'Confirmation code error (Expired/Not intialized)'
+    })
+    @ApiResponse({
+        status: 402,
+        description: 'Confirmation code error (Wrong code or expired code)'
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'Not found. User has not registered yet.'
+    })
+    @ApiResponse({
+        status: 302,
+        description: 'Account Already Activated'
+    })   
+    //END DOCUMENTATION
+    confirmUser(
+        @Body() body : confirmUserDTO,
+        @Req() request : Request
+    ){
+        const codeCookie = request.cookies[process.env.cookieSecret as string]
+        if(!codeCookie){
+            return this.userService.confirmUser(body.email, body.code);
+        }
+        const hashedCode : string = request.cookies[process.env.cookieSecret as string].code
+        return this.userService.confirmUser(body.email, body.code, hashedCode)
+    }
+
+    @Post('/login')
+    //DOCUMENTATION
+    @ApiOperation({summary: 'Login user'}) 
+    @ApiResponse({
+        status: 201,
+        description: 'Ok, no error'
+    })
+    @ApiResponse({
+        status: 400,
+        description: 'Invalid password or unactivated account.'
+    }) 
+    @ApiResponse({
+        status: 404,
+        description: 'Internal email/ User not found'
+    })   
+    //END DOCUMENTATION
+    async loginUser(
+        @Body() body : LoginUserDTO,
+    ){
+        return this.userService.loginUserFab(body);
+    }
 }

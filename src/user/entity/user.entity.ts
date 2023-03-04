@@ -12,7 +12,7 @@ export class User {
   @Column()
   lastName: string;
   
-  @Column({unique: true})
+  @Column({ unique: true })
   matricule: string;
   
   @Column()
@@ -35,4 +35,10 @@ export class User {
   
   @Column({nullable: true, default: null})
   confirmationCode: string | null = null;
+
+  @Column({nullable: true, default: null})
+  questions: ObjectID[] | null = null;
+
+  @Column({nullable: true, default: null})
+  answers: ObjectID[] | null = null;
 }
