@@ -1,0 +1,93 @@
+.logo_nav{
+    display: flex;
+    font-size: 25px;
+    font-family: "LGC Bold";
+}
+
+#texte_eni_nav{
+    background: -webkit-linear-gradient(#01680b,#04a7bd,#071b40 );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: "LGC Bold";
+}
+
+header{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height:70px;
+    padding-left: 3%;
+    padding-right: 3%;
+    box-shadow: 0 2px 3px rgba(90,90,90,0.2);
+    background-color: rgb(249,249,249);
+}
+
+.container_left_nav{
+    width:75%;
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.logo_nav{
+    height:70px;
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+.menu_nav{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 70px;
+    margin-left: 20px;
+
+}
+
+.link{
+    text-decoration: none;
+}
+
+.menu_items_nav{
+    width:90px;
+    color: rgb(90,90,90);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.container_right_nav{
+    width:25%;
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.menu_profil_nav{
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    border: 1px solid rgb(90,90,90);
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.icon_notif_nav{
+    margin-right: 10px;
+    cursor: pointer;
+    color:  rgb(90,90,90);
+}
+
+.icon_notif_nav:hover{
+    color: black;
+}
+
+
