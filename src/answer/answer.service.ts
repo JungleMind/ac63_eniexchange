@@ -173,4 +173,132 @@ export class AnswerService {
         await this.updateAnswer(answerId, {isDeleted: true})
         return null;
     }
+
+    async votePlusAnswer(userId: ObjectID, answerId: ObjectID) : Promise<null> {
+        const user = await this.userService.getUserByID(userId);
+        const answer = await this.getAnswerById(answerId);
+        let minusOne = false;
+        if(!user || !answer){
+            throw new HttpException("Subjects not found", 404);
+        }
+        if(answer.voteMoins != null){
+            var position = answer.voteMoins.indexOf(userId);
+            console.log(position);
+            if (position >= 0) {
+                await this.removeVote(userId, answerId)                           
+                console.log('remove vote called') 
+                minusOne = true;
+                await this.removeVoteFromUser(userId, answerId);
+            }
+        }        
+        if(answer.votePlus!= null){
+            if(!answer.votePlus.includes(userId)){
+                answer.votePlus.push(userId);
+                await this.updateAnswer(answerId, {
+                    votePlus: answer.votePlus,
+                    voteTotal: minusOne? answer.voteTotal + 2 : answer.voteTotal + 1
+                });
+                await this.userService.votePlus(userId, answerId);
+            }
+            return null;
+        }
+        answer.votePlus = [];
+        answer.votePlus.push(userId);
+        await this.updateAnswer(answerId, {
+            votePlus: answer.votePlus,
+            voteTotal: minusOne? answer.voteTotal + 2 : answer.voteTotal + 1
+        });        
+        await this.userService.votePlus(userId, answerId);
+        return null;
+    }
+
+    async voteMoinsAnswer(userId: ObjectID, answerId: ObjectID) : Promise<null> {
+        const user = await this.userService.getUserByID(userId);
+        const answer = await this.getAnswerById(answerId);
+        let minusOne = false;
+        if(!user || !answer){
+            throw new HttpException("Subjects not found", 404);
+        }
+        if(answer.votePlus != null){
+            var position = answer.votePlus.indexOf(userId);
+            if(position >= 0){
+                minusOne = true;                  
+                await this.removeVote(userId, answerId)                
+                await this.removeVoteFromUser(userId, answerId);
+            }
+        }
+        if(answer.voteMoins!= null){
+            if(!answer.voteMoins.includes(userId)){
+                answer.voteMoins.push(userId);
+                await this.updateAnswer(answerId, {
+                    voteMoins: answer.voteMoins,
+                    voteTotal: minusOne? answer.voteTotal - 2 : answer.voteTotal - 1
+                });                
+                await this.userService.voteMoins(userId, answerId);
+            }
+            return null;
+        }
+        answer.voteMoins = [];
+        answer.voteMoins.push(userId);
+        await this.updateAnswer(answerId, {
+            voteMoins: answer.votePlus,
+            voteTotal: minusOne? answer.voteTotal - 2 : answer.voteTotal - 1
+        });
+        await this.userService.voteMoins(userId, answerId);
+        return null;
+    }
+
+    async removeVote(userId : ObjectID, answerId : ObjectID) : Promise<null>{
+        const user = await this.userService.getUserByID(userId);
+        const question = await this.getAnswerById(answerId);
+        if(!user || !question){
+            throw new HttpException("Subjects not found", 404);
+        }
+        if(question.votePlus != null && question.votePlus.includes(userId)){
+            console.log('hita leka');
+            const index = question.votePlus.indexOf(userId);
+            question.votePlus.splice(index, 1)
+            await this.answerRepository.update(answerId, {
+                votePlus: question.votePlus,
+                voteTotal: question.voteTotal - 1
+            })            
+            console.log('removing vote plus')
+            return null;
+        }
+        if(question.voteMoins == null || question.voteMoins.includes(userId)){
+            return null;
+        }
+        question.voteMoins.splice(question.voteMoins.indexOf((userId)), 1);
+        
+        console.log('removing vote moin')
+        await this.answerRepository.update(answerId, {
+            voteMoins: question.voteMoins,
+            voteTotal: question.voteTotal - 1
+        })
+        return null;
+    }
+
+    async removeVoteFromUser(userId: ObjectID, answerId: ObjectID) : Promise<null>{
+        const user = await this.userService.getUserByID(userId);
+        const answer = await this.getAnswerById(answerId);
+        if(!user || !answer){
+            throw new HttpException("Subjects not found", 404);
+        }
+        if(user.votePlus != null && user.votePlus.includes(answerId)){
+            const index = answer.votePlus.indexOf(userId);
+            answer.votePlus.splice(index, 1)
+            await this.userService.updateUser(userId, {
+                votePlus: answer.votePlus
+            })
+            return null;
+        }
+        if(user.voteMoins == null || user.voteMoins.includes(userId)){
+            return null;
+        }
+        user.voteMoins.splice(answer.voteMoins.indexOf((userId)), 1);
+        await this.userService.updateUser(userId, {
+            voteMoins: answer.voteMoins
+        })
+        return null
+    }
 }

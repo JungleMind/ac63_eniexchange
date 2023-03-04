@@ -102,10 +102,12 @@ export class QuestionService {
         }
         if(question.voteMoins != null){
             var position = question.voteMoins.indexOf(userId);
-            if(position > 0){
-                question.voteMoins.splice(position, 1);                
-                await this.updateQuestion(questionId, {voteMoins: question.voteMoins});
+            console.log(position);
+            if (position >= 0) {
+                await this.removeVote(userId, questionId)                           
+                console.log('remove vote called') 
                 minusOne = true;
+                await this.removeVoteFromUser(userId, questionId);
             }
         }        
         if(question.votePlus!= null){
@@ -115,6 +117,7 @@ export class QuestionService {
                     votePlus: question.votePlus,
                     voteTotal: minusOne? question.voteTotal + 2 : question.voteTotal + 1
                 });
+                await this.userService.votePlus(userId, questionId);
             }
             return null;
         }
@@ -123,7 +126,8 @@ export class QuestionService {
         await this.updateQuestion(questionId, {
             votePlus: question.votePlus,
             voteTotal: minusOne? question.voteTotal + 2 : question.voteTotal + 1
-        });
+        });        
+        await this.userService.votePlus(userId, questionId);
         return null;
     }
 
@@ -136,18 +140,20 @@ export class QuestionService {
         }
         if(question.votePlus != null){
             var position = question.votePlus.indexOf(userId);
-            if(position > 0){
-                question.votePlus.splice(position, 1);                
-                await this.updateQuestion(questionId, {votePlus: question.votePlus});
+            if(position >= 0){
+                minusOne = true;                  
+                await this.removeVote(userId, questionId)                
+                await this.removeVoteFromUser(userId, questionId);
             }
-        }        
+        }
         if(question.voteMoins!= null){
             if(!question.voteMoins.includes(userId)){
                 question.voteMoins.push(userId);
                 await this.updateQuestion(questionId, {
                     voteMoins: question.voteMoins,
                     voteTotal: minusOne? question.voteTotal - 2 : question.voteTotal - 1
-                });
+                });                
+                await this.userService.voteMoins(userId, questionId);
             }
             return null;
         }
@@ -157,6 +163,7 @@ export class QuestionService {
             voteMoins: question.votePlus,
             voteTotal: minusOne? question.voteTotal - 2 : question.voteTotal - 1
         });
+        await this.userService.voteMoins(userId, questionId);
         return null;
     }
 
@@ -173,13 +180,16 @@ export class QuestionService {
             await this.questionRepository.update(questionId, {
                 votePlus: question.votePlus,
                 voteTotal: question.voteTotal - 1
-            })
+            })            
+            console.log('removing vote plus')
             return null;
         }
         if(question.voteMoins == null || question.voteMoins.includes(userId)){
             return null;
         }
         question.voteMoins.splice(question.voteMoins.indexOf((userId)), 1);
+        
+        console.log('removing vote moin')
         await this.questionRepository.update(questionId, {
             voteMoins: question.voteMoins,
             voteTotal: question.voteTotal - 1
@@ -194,8 +204,21 @@ export class QuestionService {
             throw new HttpException("Subjects not found", 404);
         }
         if(user.votePlus != null && user.votePlus.includes(questionId)){
-            
+            const index = question.votePlus.indexOf(userId);
+            question.votePlus.splice(index, 1)
+            await this.userService.updateUser(userId, {
+                votePlus: question.votePlus
+            })
+            return null;
         }
+        if(user.voteMoins == null || user.voteMoins.includes(userId)){
+            return null;
+        }
+        user.voteMoins.splice(question.voteMoins.indexOf((userId)), 1);
+        await this.userService.updateUser(userId, {
+            voteMoins: question.voteMoins
+        })
         return null
     }
+
 }

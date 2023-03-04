@@ -18,8 +18,7 @@ export class UserService {
     constructor(
         @InjectRepository(User)
         private userFabRepository: Repository<User>,          
-        private jwtService: JwtService,      
-        // private jwtService: JwtService,
+        private jwtService: JwtService,  
       ) {}
 
       getAllUsers(): Promise<User[]> {
@@ -70,11 +69,6 @@ export class UserService {
       async confirmUser(mail: string, code: string, hashedCode?: string) : Promise<User | null> {
         if(hashedCode){
         var validCode : Boolean = await brcypt.compare(code, hashedCode)
-          // if (validCode == false){
-          //   const user = await this.getUserByEmail(mail);
-          //   console.log('confimation function: '+ user?.confirmationCode)
-          //   validCode = await brcypt.compare(code, user?.confirmationCode as string)
-          // }
         }  else {
           const user = await this.getUserByEmail(mail);
           console.log('confimation function: '+ user?.confirmationCode)          
@@ -90,12 +84,6 @@ export class UserService {
           if (!validCode) {
             throw new HttpException("Invalid Credentials", 402)
           }
-        //   if(user.isCoopMember) {
-        //     const correctCode = await brcypt.compare(code, user.confirmationCode as string)
-        //     if (!correctCode) {
-        //       throw new HttpException("Invalid Credentials", 402)
-        //     }
-        //   }
         await this.userFabRepository.update({email: mail}, {activatedAccount: true, confirmationCode: null})            
         const updatedUser : User | null = await this.getUserByEmail(mail)
         if(updatedUser){
@@ -124,6 +112,45 @@ export class UserService {
       async updateUser(userId: ObjectID, userUpdateDto: UserUpdateDTO) : Promise<User | null> {
         await this.userFabRepository.update(userId, {...userUpdateDto})
         return this.getUserByID(userId);
+      }
+
+      //VOTE 
+      async votePlus(userId: ObjectID, elementId: ObjectID) {
+        const user = await this.getUserByID(userId);
+        if(!user){
+          throw new HttpException("User not found.", 404);
+        }
+        if(user.votePlus != null && !user.votePlus.includes(elementId)){
+          user.votePlus.push(elementId)
+          await this.updateUser(userId, {
+            votePlus: user.votePlus,
+          })
+          return null;
+        }
+        user.votePlus = [elementId];
+        await this.updateUser(userId, {
+          votePlus: user.votePlus,
+        })
+        return null;
+      }
+
+      async voteMoins(userId: ObjectID, elementId: ObjectID) {
+        const user = await this.getUserByID(userId);
+        if(!user){
+          throw new HttpException("User not found.", 404);
+        }
+        if(user.voteMoins != null && !user.voteMoins.includes(elementId)){
+          user.voteMoins.push(elementId)
+          await this.updateUser(userId, {
+            voteMoins: user.voteMoins,
+          })
+          return null;
+        }
+        user.voteMoins = [elementId];
+        await this.updateUser(userId, {
+          voteMoins: user.voteMoins,
+        })
+        return null;
       }
   
 

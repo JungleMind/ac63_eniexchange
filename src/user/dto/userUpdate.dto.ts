@@ -1,4 +1,4 @@
-import {IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, MinLength} from 'class-validator';
+import {IsArray, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, MinLength} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional} from '@nestjs/swagger'
 import { ObjectID } from 'typeorm';
 
@@ -71,4 +71,20 @@ export class UserUpdateDTO {
       @IsOptional()
       @IsString()
       answers?: ObjectID[];
+
+    @ApiPropertyOptional({
+      example: ['idzezertryn'],
+      description: 'Question ID for which the student has vote plus',
+    })       
+      @IsOptional()
+      @IsArray()
+      votePlus?: ObjectID[];
+
+    @ApiPropertyOptional({
+      example: ['idzezertryn'],
+      description: 'Question ID for which the student has vote moins',
+    })       
+      @IsOptional()
+      @IsArray()
+      voteMoins?: ObjectID[];
 }
