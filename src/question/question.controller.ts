@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Request, Response } from 'express';
 import { ObjectID } from 'typeorm';
 import { CreateQuestionDTO } from './dto/createQuestion.dto';
 import { UpdateQuestionDTO } from './dto/updateQuestion.dto';
@@ -25,7 +26,12 @@ export class QuestionController {
         description: 'Internal server error'
     })
     // END DOCUMENTATION
-    getAllQuestions(){
+    getAllQuestions(
+        @Req() request : Request
+        ){
+        console.log('made it to the controller');
+        console.log(request["user"]);        
+        console.log('request["user"]');
         return this.questionService.getAllQuestions();
     }
 

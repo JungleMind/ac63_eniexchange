@@ -10,7 +10,7 @@ import { UserService } from './user.service';
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
     secret: `${process.env.jwtSecret}`,
-    signOptions: {expiresIn: '1d'},
+    signOptions: {expiresIn: 24*60*60*1000}, //1 day
   }),],
   controllers: [UserController],
   providers: [UserService],
