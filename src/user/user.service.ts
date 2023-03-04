@@ -125,6 +125,7 @@ export class UserService {
         await this.userFabRepository.update(userId, {...userUpdateDto})
         return this.getUserByID(userId);
       }
+  
 
       //UTILS FUNCTIONS
       

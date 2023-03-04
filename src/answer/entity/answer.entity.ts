@@ -35,4 +35,14 @@ export class Answer {
 
   @Column({default: false})
   isDeleted: boolean = false;
+
+  
+  @Column({nullable: true})
+  votePlus: ObjectID[] | null = null;
+  
+  @Column({nullable: true})
+  voteMoins: ObjectID[] | null = null;
+
+  @Column({default: 0})
+  voteTotal: number = 0;
 }

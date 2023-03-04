@@ -41,4 +41,10 @@ export class User {
 
   @Column({nullable: true, default: null})
   answers: ObjectID[] | null = null;
+
+  @Column({nullable: true})
+  votePlus: ObjectID[] | null = null;
+  
+  @Column({nullable: true})
+  voteMoins: ObjectID[] | null = null;
 }

@@ -20,6 +20,6 @@ async function bootstrap() {
 		SwaggerModule.setup('api', app, document);
 	}
 	app.use(cookieParser(process.env.cookieSecret))
-  await app.listen(3000);
+  await app.listen(6969);
 }
 bootstrap();

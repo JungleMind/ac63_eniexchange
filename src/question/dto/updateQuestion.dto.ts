@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, isNumber, IsOptional, IsString } from "class-validator";
 import { ObjectID } from 'typeorm';
 
 export class UpdateQuestionDTO {
@@ -57,6 +57,34 @@ export class UpdateQuestionDTO {
     description: 'Answer list for question',
   })       
     @IsOptional()
-    @IsString()
+    @IsArray()
     answers?: ObjectID[];
+
+  
+  @ApiPropertyOptional({
+    example: ['odinrgo22'],
+    description: 'List of userId who vote plus for question',
+  })       
+    @IsOptional()
+    @IsArray()
+    votePlus?: ObjectID[];
+
+
+  @ApiPropertyOptional({
+    example: ['odinrgo22'],
+    description: 'List of userId who vote moins for question',
+  })       
+    @IsOptional()
+    @IsArray()
+    voteMoins?: ObjectID[];
+    
+    
+  
+  @ApiPropertyOptional({
+    example: 2,
+    description: 'Total vote for the question',
+  })       
+    @IsOptional()
+    @IsNumber()
+    voteTotal?: number;
 }

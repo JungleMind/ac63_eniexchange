@@ -32,4 +32,14 @@ export class Question {
   
   @Column({nullable: true, default: null})
   answers: ObjectID[] | null = null;
+
+  
+  @Column({nullable: true})
+  votePlus: ObjectID[] | null = null;
+  
+  @Column({nullable: true})
+  voteMoins: ObjectID[] | null = null;
+
+  @Column({default: 0})
+  voteTotal: number = 0;
 }
