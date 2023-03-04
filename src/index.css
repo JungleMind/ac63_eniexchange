@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@font-face {
+  font-family: "Long_Shot";   /*Can be any text*/
+  src: local("Long_Shot"),
+    url("./fonts/Long_Shot.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "LGC Light";   /*Can be any text*/
+  src: local("Louis George Cafe Light"),
+    url("./fonts/Louis George Cafe Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "LGC";   /*Can be any text*/
+  src: local("Louis George Cafe"),
+    url("./fonts/Louis George Cafe.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "LGC Bold";   /*Can be any text*/
+  src: local("Louis George Cafe Bold"),
+    url("./fonts/Louis George Cafe Bold.ttf") format("truetype");
+}
+
