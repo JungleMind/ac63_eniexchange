@@ -3,8 +3,8 @@ Cloner la partie frontend de l'application
 
 ## Installation packages
 
-Dans le répertoire du projet, lancer un terminal et : npm install
-
+Dans le répertoire du projet, lancer un terminal et : 
+### `npm install`
 ### `npm start`
 L'application est consultable sur [http://localhost:3000](http://localhost:3000) sur votre navigateur.
 
