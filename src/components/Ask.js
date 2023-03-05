@@ -1,11 +1,36 @@
-import React from 'react'
+import React,{useState} from 'react'
 import Nav from "./Nav";
 import '../css/ask.css';
 import ask from '../images/ask.png' 
 import {BsEmojiWink } from "react-icons/bs";
+import TextEditor from './TextEditor';
+import axios from 'axios'
+import { Link } from 'react-router-dom';
 
 
 const Ask = () => {
+    const [questionTitle,setQuestiontitle] = useState("");
+    const [content,setContent] = useState("");
+    const [technology,setTechnology] = useState("");
+    const [userid,setUserid] = useState(localStorage.getItem('user'))
+
+    const questData = {
+        questionTitle: questionTitle,
+        content: "SJDFHKSDHFKSJFKLSDJFKLSDJFKL",
+        technology: technology.split(" "),
+        questionAuthorId: userid
+      }
+    const askQuestion = ()=>{
+        axios.post("http://localhost:6969/api/question",questData).then(function (response) {
+            if(response.status === 400) {
+                console.log(response.error)
+            } else if(response.status === 201) {
+                console.log(response.data)
+            }
+        });
+    }
+
+
   return (
     <div>
         <Nav />
@@ -31,7 +56,14 @@ const Ask = () => {
                         Saisir le titre de votre question. Soyez spécifique, concis et clair. 
                         <BsEmojiWink size={17} id="emoji_wink"/> 
                     </div>
-                    <input type="texte" placeholder="Titre" id='titre_titre_ask'/>
+                    <input 
+                        type="texte" 
+                        placeholder="Titre" 
+                        id='titre_titre_ask' 
+                        onChange={(e)=>{
+                            setQuestiontitle(e.target.value)
+                        }}
+                    />
                 </div>
                 <div className='boite_ask'>
                     <div className='titre_ask'>
@@ -40,7 +72,10 @@ const Ask = () => {
                     <div className='para_ask'>
                         Décrivez votre problème, ce que vous avez essayé, ce que vous espériez et ce qui en a résulté. 
                     </div>
-                    <input type="texte" placeholder="Détails" /> 
+                    <div className='textedit'>
+                        <TextEditor />
+                    </div>
+                    
                 </div>
                 <div className='boite_ask'>
                     <div className='titre_ask'>
@@ -49,8 +84,24 @@ const Ask = () => {
                     <div className='para_ask'>
                         Précisez les techno que vous avez utilisés. 
                     </div>
-                    <input type="texte" placeholder="Technologie" id='titre_techno_ask'/>
+                    <input type="texte" placeholder="Technologie" id='titre_techno_ask' 
+                    onChange={(e)=>{
+                        setTechnology(e.target.value)
+                    }}/>
                 </div>
+                <div className='boite_ask' id='boutonask'>
+                    <div className='poster' onClick={()=>askQuestion()}>
+                        Poster
+                    </div>
+                    <Link className='link' to="/question">
+                        <div className='annulerpost'>
+                            Annuler
+                        </div>
+                    </Link>
+                   
+                </div>
+                
+
             </div>
         </div>
      

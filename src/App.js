@@ -6,6 +6,7 @@ import Accueil from './components/Accueil';
 import Question from './components/Question';
 import Ask from './components/Ask';
 import Users from './components/Users';
+import Detailquestion from './components/Detailquestion';
 import "./fonts/Long_Shot.ttf";
 import "./fonts/Louis George Cafe Light.ttf";
 import "./fonts/Louis George Cafe.ttf";
@@ -52,6 +53,14 @@ function App() {
             element={
               <Protected isSignedIn={isSignedIn}>
                 <Users />
+              </Protected>
+            } 
+          />
+           <Route 
+            path="detailquestion" 
+            element={
+              <Protected isSignedIn={isSignedIn}>
+                <Detailquestion />
               </Protected>
             } 
           />

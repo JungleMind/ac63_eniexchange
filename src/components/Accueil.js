@@ -156,7 +156,12 @@ const Accueil = () =>{
                 <div className='content_acc'>
                     <div className='content_left_acc'>
                         <div className='image_profil_acc'>
-                            <img src ={require('../images/'+connectedUser.image+'.png')} alt="Photo de profil"/>
+                            {
+                                connectedUser.image !=undefined &&(
+                                    <img src ={require('../images/'+connectedUser.image+'.png')} alt="Photo de profil"/>
+                                )
+                            }
+                            
                         </div>
                         {
                             !edit && (
