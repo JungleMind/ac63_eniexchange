@@ -107,6 +107,7 @@ export class QuestionService {
                 await this.removeVote(userId, questionId)                           
                 console.log('remove vote called') 
                 minusOne = true;
+                await this.removeVote(userId, questionId)    
                 await this.removeVoteFromUser(userId, questionId);
             }
         }        

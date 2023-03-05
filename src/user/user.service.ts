@@ -142,17 +142,19 @@ export class UserService {
         if(!user){
           throw new HttpException("User not found.", 404);
         }
-        if(user.votePlus != null && !user.votePlus.includes(elementId)){
+        if(user.votePlus == null ||user.votePlus.length == 0) {
+          user.votePlus = [elementId];
+          await this.updateUser(userId, {
+            votePlus: user.votePlus,
+          })
+        }
+        if(!user.votePlus.includes(elementId)){
           user.votePlus.push(elementId)
           await this.updateUser(userId, {
             votePlus: user.votePlus,
           })
           return null;
         }
-        user.votePlus = [elementId];
-        await this.updateUser(userId, {
-          votePlus: user.votePlus,
-        })
         return null;
       }
 
@@ -161,17 +163,19 @@ export class UserService {
         if(!user){
           throw new HttpException("User not found.", 404);
         }
-        if(user.voteMoins != null && !user.voteMoins.includes(elementId)){
+        if(user.voteMoins == null ||user.voteMoins.length == 0) {
+          user.voteMoins = [elementId];
+          await this.updateUser(userId, {
+            voteMoins: user.voteMoins,
+          })
+        }
+        if(!user.voteMoins.includes(elementId)){
           user.voteMoins.push(elementId)
           await this.updateUser(userId, {
             voteMoins: user.voteMoins,
           })
           return null;
         }
-        user.voteMoins = [elementId];
-        await this.updateUser(userId, {
-          voteMoins: user.voteMoins,
-        })
         return null;
       }
   
