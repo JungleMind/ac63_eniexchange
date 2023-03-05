@@ -16,7 +16,7 @@ const Ask = () => {
 
     const questData = {
         questionTitle: questionTitle,
-        content: "SJDFHKSDHFKSJFKLSDJFKLSDJFKL",
+        content: content,
         technology: technology.split(" "),
         questionAuthorId: userid
       }
@@ -29,8 +29,11 @@ const Ask = () => {
             }
         });
     }
-
-
+    const getContent = (content) => {
+        console.log('data in the parent', content)
+        setContent(content);
+    }
+    console.log('content leka', content)
   return (
     <div>
         <Nav />
@@ -73,7 +76,7 @@ const Ask = () => {
                         Décrivez votre problème, ce que vous avez essayé, ce que vous espériez et ce qui en a résulté. 
                     </div>
                     <div className='textedit'>
-                        <TextEditor />
+                        <TextEditor getContent={getContent}/>
                     </div>
                     
                 </div>
