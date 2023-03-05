@@ -10,20 +10,51 @@ import "./fonts/Long_Shot.ttf";
 import "./fonts/Louis George Cafe Light.ttf";
 import "./fonts/Louis George Cafe.ttf";
 import "./fonts/Louis George Cafe Bold.ttf";
+import Protected from './components/Protected';
 
 
 function App() {
+  const isSignedIn = localStorage.getItem("isSignedIn");
+
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route index element={<Login/>} />
+          {/* <Route index element={<Login/>} /> */}
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="accueil" element={<Accueil />} />
-          <Route path="question" element={<Question />} />
-          <Route path="demander" element={<Ask />} />
-          <Route path="utilisateurs" element={<Users />} />
+          <Route 
+            path="accueil" 
+            element={
+              <Protected isSignedIn={isSignedIn}>
+                <Accueil />
+              </Protected>
+            } 
+          />
+          <Route 
+            path="question" 
+            element={
+              <Protected isSignedIn={isSignedIn}>
+                <Question />
+              </Protected>
+            } 
+          />
+          <Route 
+            path="demander" 
+            element={
+              <Protected isSignedIn={isSignedIn}>
+                <Ask />
+              </Protected>
+            } 
+          />
+          <Route 
+            path="utilisateurs" 
+            element={
+              <Protected isSignedIn={isSignedIn}>
+                <Users />
+              </Protected>
+            } 
+          />
         </Routes>
       </BrowserRouter>
     </div>

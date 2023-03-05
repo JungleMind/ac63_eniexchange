@@ -2,21 +2,44 @@ import React, {useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../css/login.css';
 import illustration_login from '../images/illustration_login.png' 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
+import axios from 'axios'
 
 const initialState = {
-    matricule:"",
+    mail:"",
     mdp:""
 }
 
 const Login = () =>{
     const [state,setState]= useState(initialState);
-    const {matricule,mdp} =state;
+    const {mail,mdp} =state;
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const {name,value} = e.target;
         setState({...state, [name]:value});
-     }
+    }
+
+    const loginUser = ()=> {
+        axios.post("http://localhost:6969/api/user/login",{email:mail,password:mdp}).then(function (response) {
+            setLoading(true);
+            if(response.status === 400) {
+                setError('Adresse email ou mot de passe incorrecte.')
+                setLoading(false);
+            } else if(response.status === 201) {
+                console.log(response.data)
+                localStorage.setItem('user', response.data.user._id);
+                localStorage.setItem('accessToken', response.data.access_token);
+                localStorage.setItem('isSignedIn', true);
+                setLoading(false);
+                navigate('/accueil');
+            }
+        });
+    }
     
     return(
         <div className='container_login'>
@@ -38,13 +61,24 @@ const Login = () =>{
                     </div>
                     <form className='form_login'>
                         <div className='input_login'>
-                            <label>N° Matricule</label>
+                            <label>Adresse e-mail</label>
+                            {error &&
+                                <p 
+                                    style={{
+                                        fontSize: "10px",
+                                        color: "#D32F2F",
+                                        fontWeight: "bold"
+                                    }}
+                                >
+                                    {error}
+                                </p>                                        
+                            }
                             <input 
                                 type="text" 
-                                placeholder='Entrez votre n° matricule'
-                                id="matricule"
-                                name="matricule"
-                                value={matricule}
+                                placeholder='Entrez votre email'
+                                id="mail"
+                                name="mail"
+                                value={mail}
                                 onChange={handleInputChange}
                                 required />
                         </div>
@@ -59,11 +93,17 @@ const Login = () =>{
                                 onChange={handleInputChange}
                                 required/>
                         </div>
-                        <div className='bouton_login'>
-                            <Link id="link" to="/accueil">
+                        <div 
+                            className='bouton_login'
+                            onClick={loginUser}
+                        >
+                            {loading ?
+                                <Spinner animation="border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </Spinner>
+                                :
                                 <input type="button" value="Se connecter"/>
-                            </Link>
-                           
+                            }
                         </div>
                         <div className='signup_login'>
                             <p>Vous êtes un nouvel utilisateur ? </p>

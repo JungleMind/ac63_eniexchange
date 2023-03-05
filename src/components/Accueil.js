@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import Nav from "./Nav";
 import '../css/accueil.css';
 import { MdOutlineSummarize,MdQuestionMark,MdOutlineQuestionAnswer,MdStarOutline,MdInfoOutline } from "react-icons/md";
 import avatar from '../images/avatar.png' 
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 
 const Accueil = () =>{
     const [showapercu,setShowapercu] =useState(true);
@@ -16,8 +17,66 @@ const Accueil = () =>{
     const [borderanswer,setBorderanswer] = useState("3px solid transparent");
     const [borderrep,setBorderrep] = useState("3px solid transparent");
 
-    const [edit,setEdit] = useState(false)
+    const [connectedUser,setConnecteduser] = useState([]);
+    const [userid,setUserid] = useState(localStorage.getItem('user'))
+    const [myquest,setMyquest] = useState([])
+    const [myans,setMyans] = useState([])
 
+
+
+
+    const [edit,setEdit] = useState(false);
+
+    const loadDataUsers = async()=>{
+        const response = await axios.get("http://localhost:6969/api/user/"+userid);
+        setConnecteduser(response.data);
+        const response1 = await axios.get("http://localhost:6969/api/question/MyQuestions/"+userid);
+        setMyquest(response1.data);
+        const response2 = await axios.get("http://localhost:6969/api/answer/user/"+userid);
+        setMyans(response2.data);
+     }
+
+    useEffect(() => {
+        getUserById()
+        loadDataUsers()
+        getMyAnswer()
+        getMyQuestions()
+     }, []);
+
+    const accessToken = localStorage.getItem('accessToken');
+
+    const getUserById= ()=>{
+        axios.get("http://localhost:6969/api/user/"+userid).then(function (response) {
+            if(response.status === 400) {
+                console.log(response.error)
+            } else if(response.status === 201) {
+                console.log(response.data)
+                setConnecteduser(response.data)
+            }
+        });
+    }
+
+    const getMyQuestions = ()=> {
+        axios.get("http://localhost:6969/api/question/MyQuestions/"+userid).then(function (response) {
+            if(response.status === 400) {
+                console.log(response.error)
+            } else if(response.status === 201) {
+                console.log(response.data)
+                setMyquest(response.data)
+            }
+        });
+    }
+
+    const getMyAnswer = ()=> {
+        axios.get("http://localhost:6969/api/answer/user/"+userid).then(function (response) {
+            if(response.status === 400) {
+                console.log(response.error)
+            } else if(response.status === 201) {
+                console.log(response.data)
+                setMyans(response.data)
+            }
+        });
+    }
 
     return(
         <div>
@@ -97,18 +156,19 @@ const Accueil = () =>{
                 <div className='content_acc'>
                     <div className='content_left_acc'>
                         <div className='image_profil_acc'>
-                            <img src={avatar} alt="Photo de profil"/>
+                            <img src ={require('../images/'+connectedUser.image+'.png')} alt="Photo de profil"/>
                         </div>
                         {
                             !edit && (
                                 <div>
                                     <div className='name_profil_acc'>
                                         <div className='nom_acc'>
-                                            <b>RAJAONARISON</b>
+                                            <b>{connectedUser.firstName == undefined ? "" : connectedUser.firstName }</b>
+                                            {/* {connectedUser._id} */}
                                         </div>
                                         <div>
                                             <MdInfoOutline className='icon_items_acc' size={15}/>
-                                            809H-F | M2
+                                            {connectedUser.matricule} | {connectedUser.niveau}
                                         </div>
                                     </div>
                                     <div className='edit_profil_acc' onClick={()=>setEdit(true)  
@@ -170,11 +230,11 @@ const Accueil = () =>{
                                 <div className='box_acc'>
                                     
                                         <div className='details_details_acc'>
-                                           <div>3</div>
+                                           <div>{myquest.length}</div>
                                            <div className='soratra_details'>Questions</div>
                                         </div>
                                         <div className='details_details_acc'>
-                                           <div>0</div>
+                                           <div>{myans.length}</div>
                                            <div className='soratra_details'>Réponse</div>
                                         </div> 
                                 </div>
@@ -182,7 +242,7 @@ const Accueil = () =>{
                                 <div className='box_acc'>
                                     
                                         <div className='details_details_acc'>
-                                           <div>0</div>
+                                           <div>{connectedUser.reputation}</div>
                                            <div className='soratra_details'>Réputation</div>
                                         </div>
     
@@ -199,27 +259,44 @@ const Accueil = () =>{
                             showquestion && (
                                 <div className='content_question'>
                                     <div className='question_div'> 
-                                    <b>3 questions</b>
-                                    <div className='liste_question'>
-                                    <div className='question_box'>
-                                            <div className='tete_kely'>
-                                                <div className='qb_reponse'>
-                                                    4 votes | 6 réponses
+                                        <b>{myquest.length} questions</b>
+                                        <div className='liste_question'>
+
+                                        {
+                                            myquest.length != 0 && myquest.map((myq,index)=>{
+                                            <div className='question_box'>
+                                                <div className='tete_kely'>
+                                                    <div className='qb_reponse'>
+                                                    {myq.voteTotal} votes | {myq.answers == null ? '0' : myq.answers } réponses 
+                                                    </div>
+                                                    {
+                                                        myq.resolu &&(
+                                                            <div className='qb_resolu_questions'>
+                                                                <b style={{color:"rgb(0,127,0)"}}>Résolue</b>
+                                                            </div>  
+                                                        )
+                                                    }
+                                                </div> 
+                                                <div className='qb_titre'>
+                                                <b>{myq.questionTitle}</b>
                                                 </div>
-                                                <div className='qb_resolu'>
-                                                    <b style={{color:"rgb(0,127,0)"}}>Résolue</b>
+                                                <div className='qb_techno'>
+                                                    <div className='techno_style_questions'>{typeof(myq.technology)}</div>
                                                 </div>
-                                                
-                                            </div> 
-                                            <div className='qb_titre'>
-                                                <b>Generate graph from a list of connected components</b>
                                             </div>
-                                            <div className='qb_techno'>
-                                                <div className='techno_style'>Javascript</div>
-                                                <div className='techno_style'>Html</div>
-                                                <div className='techno_style'>Css</div>
-                                            </div>
-                                        </div>
+                                            })
+                                        }
+
+                                        {
+                                            myquest.length == 0 && (
+                                                <Link className='link' to="/question">
+                                                    <div className='btn_add_question'>
+                                                        Nouvelle question
+                                                    </div>
+                                                </Link>
+                                            )
+                                        }
+             
                                         </div>
                                     </div>
                                     <div className='ajouter_question'>
@@ -243,65 +320,43 @@ const Accueil = () =>{
                         {
                             showanswer && (
                                 <div className='question_div'> 
-                                    <b>3 réponses</b>
+                                    <b>{myans.length} réponses</b>
                                     <div className='liste_question'>
-                                        <div className='question_box'>
-                                            <div className='tete_kely'>
-                                                <div className='qb_reponse'>
-                                                    4 votes
+
+                                        {
+                                            myans.length != 0 && myans.map((ans,index)=>{
+                                                <div className='question_box'>
+                                                    <div className='tete_kely'>
+                                                        <div className='qb_reponse'>
+                                                            {ans.votePLus} vote + | {ans.voteMoins} vote -
+                                                        </div>
+                                                        {
+                                                            ans.solution &&(
+                                                                <div className='qb_resolu'>
+                                                                    <b style={{color:"rgb(0,127,0)"}}>Accepté</b>
+                                                                </div>  
+                                                            )
+                                                        }
+                                                    </div> 
+                                                    <div className='qb_titre'>
+                                                        <b>{ans.content}</b>
+                                                    </div>
+                                                    {/* <div className='qb_techno'>
+                                                        <div className='techno_style'>Javascript</div>
+                                                        <div className='techno_style'>Html</div>
+                                                        <div className='techno_style'>Css</div>
+                                                    </div> */}
                                                 </div>
-                                                <div className='qb_resolu'>
-                                                    <b style={{color:"rgb(0,127,0)"}}>Accepté</b>
+                                            })
+                                        }
+
+                                        {
+                                            myans.length == 0 && (
+                                                <div>
+                                                    Aidez les autres à trouver une solution.
                                                 </div>
-                                                
-                                            </div> 
-                                            <div className='qb_titre'>
-                                                <b>Generate graph from a list of connected components</b>
-                                            </div>
-                                            <div className='qb_techno'>
-                                                <div className='techno_style'>Javascript</div>
-                                                <div className='techno_style'>Html</div>
-                                                <div className='techno_style'>Css</div>
-                                            </div>
-                                        </div>
-                                        <div className='question_box'>
-                                            <div className='tete_kely'>
-                                                <div className='qb_reponse'>
-                                                    4 votes
-                                                </div>
-                                                <div className='qb_resolu'>
-                                                    <b style={{color:"rgb(0,127,0)"}}>Accepté</b>
-                                                </div>
-                                                
-                                            </div> 
-                                            <div className='qb_titre'>
-                                                <b>Generate graph from a list of connected components</b>
-                                            </div>
-                                            <div className='qb_techno'>
-                                                <div className='techno_style'>Javascript</div>
-                                                <div className='techno_style'>Html</div>
-                                                <div className='techno_style'>Css</div>
-                                            </div>
-                                        </div>
-                                        <div className='question_box'>
-                                            <div className='tete_kely'>
-                                                <div className='qb_reponse'>
-                                                    4 votes
-                                                </div>
-                                                <div className='qb_resolu'>
-                                                    <b style={{color:"rgb(0,127,0)"}}>Accepté</b>
-                                                </div>
-                                                
-                                            </div> 
-                                            <div className='qb_titre'>
-                                                <b>Generate graph from a list of connected components</b>
-                                            </div>
-                                            <div className='qb_techno'>
-                                                <div className='techno_style'>Javascript</div>
-                                                <div className='techno_style'>Html</div>
-                                                <div className='techno_style'>Css</div>
-                                            </div>
-                                        </div>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             ) 
@@ -314,7 +369,7 @@ const Accueil = () =>{
                                         <b>Réputations</b>
                                         <div className='box_rep'>
                                                 <div className='details_details_rep'>
-                                                <div>3</div>
+                                                <div>{connectedUser.reputation}</div>
                                                 <div className='soratra_details'>Réputations</div>
                                                 </div>
                                                 <div className='details_details_rep'>
@@ -325,11 +380,11 @@ const Accueil = () =>{
                                         <b>Votes</b>
                                         <div className='box_rep'>
                                                 <div className='details_details_rep'>
-                                                <div>3</div>
+                                                <div>{connectedUser.votePlus == null ? "0" : connectedUser.votePlus.length}</div>
                                                 <div className='soratra_details'>Votes pour</div>
                                                 </div>
                                                 <div className='details_details_rep'>
-                                                <div>0</div>
+                                                <div>{connectedUser.voteMoins == null ? "0" : connectedUser.voteMoins.length}</div>
                                                 <div className='soratra_details'>Votes contre</div>
                                                 </div> 
                                         </div>

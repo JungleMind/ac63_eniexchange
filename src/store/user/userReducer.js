@@ -1,6 +1,6 @@
 import { createSlice, SerializedError } from "@reduxjs/toolkit";
 import { registerUser } from "./UserAction/registerUser";
-import { verifyEmail } from "./UserAction/verifyEmail";
+import { verifyEmailUser } from "./UserAction/verifyEmail";
 
 const initialState = {
     register: {
@@ -67,15 +67,15 @@ const userReducer = createSlice({
         })
 
         // Verify user email
-        builder.addCase(verifyEmail.pending, (state) => {
+        builder.addCase(verifyEmailUser.pending, (state) => {
             state.verifyEmail.loading = true;
             state.verifyEmail.error = null; 
         })
-        builder.addCase(verifyEmail.fulfilled, (state) => {
+        builder.addCase(verifyEmailUser.fulfilled, (state) => {
             state.verifyEmail.loading = true;
             state.verifyEmail.success = true; // email verified
         })
-        builder.addCase(verifyEmail.rejected, (state, action) => {
+        builder.addCase(verifyEmailUser.rejected, (state, action) => {
             state.verifyEmail.loading = false;
 
             if (action.payload) {

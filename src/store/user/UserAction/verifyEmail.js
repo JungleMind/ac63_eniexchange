@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { verifyEmailApi } from "../../../services/UserServices";
 
 // Verify Email
-export const verifyEmail = createAsyncThunk(
+export const verifyEmailUser = createAsyncThunk(
     'user/verifyEmail', 
     async ({userData}, { rejectWithValue }) => {
         const res =  await(await(verifyEmailApi(userData)))?.json();

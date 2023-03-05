@@ -1,13 +1,14 @@
 import React, { useState, setState } from 'react'
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../css/register.css';
 import illustration_login from '../images/illustration_login.png' 
 import { BsArrowRight,BsArrowLeft,BsCheckLg } from "react-icons/bs";
 import { createUserApi, verifyEmailApi } from '../services/UserServices';
-import { registerUser, verifyEmail } from '../store/user/UserAction/registerUser';
+import { registerUser } from '../store/user/UserAction/registerUser';
 import { Form, Spinner } from 'react-bootstrap';
+import { verifyEmailUser } from '../store/user/UserAction/verifyEmail';
 
 const initialState = {
     firstName: "",
@@ -38,6 +39,8 @@ const Register = () => {
     const [loading, setLoading] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const [errorMail, setErrorMail] = useState(false);
+
+    const navigate = useNavigate();
 
     const {
         firstName,
@@ -145,14 +148,22 @@ const Register = () => {
 	};
 
     const verifyEmail = async() => {
+        setLoading(true);
+        if(!confirmationCode) {
+            setValidatedCode(false);
+            setLoading(false);
+            return null;
+        };
+
         const userData = {
             email: email,
             code: confirmationCode
         }
 
-		await(verifyEmailApi(dispatch(verifyEmail({ userData }))))
+		await(verifyEmailApi(dispatch(verifyEmailUser({ userData }))))
             .then(() => {
-                Navigate.navigate("/accueil");
+                setLoading(false);
+                navigate('/Login');
             });
     }
     
@@ -441,16 +452,25 @@ const Register = () => {
                                             placeholder='Entrez le code' 
                                             name="confirmationCode"
                                             value={confirmationCode}
-                                            onChange={handleInputChange}    
+                                            onChange={handleInputChange}  
+                                            style={{ 
+                                                backgroundColor: !validatedCode && '#D32F2F'
+                                            }}
                                         />
                                     </div>
 
                                     <div className='bouton_register'>
-                                        <input 
-                                            type="button" 
-                                            value="Vérifier"
-                                            onClick={verifyEmail}
-                                        />
+                                        {loading ?
+                                            <Spinner animation="border" role="status">
+                                                <span className="visually-hidden">Loading...</span>
+                                            </Spinner>
+                                            :
+                                            <input 
+                                                type="button" 
+                                                value="Vérifier"
+                                                onClick={verifyEmail}
+                                            />
+                                        }
                                     </div>
                                 </div>
                             )
