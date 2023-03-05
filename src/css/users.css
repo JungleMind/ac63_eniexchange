@@ -48,6 +48,12 @@
     cursor: pointer;
 }
 
+#search_icon_users :hover{
+    color:green;
+}
+
+
+
 .middle_users{
     display:flex;
     flex-direction: row;
@@ -158,7 +164,6 @@
     justify-content: flex-start;
     align-items: flex-end;
     height:70px;
-
     background-color: white;
     border-bottom:1px solid rgba(90, 90, 90,0.2);
     /* border:1px solid green; */
@@ -172,7 +177,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     padding-bottom: 10px;
-    /* border:1px solid green; */
+    border-bottom:3px solid white;
     font-size: 14px;
     /* border:1px solid green; */
 }

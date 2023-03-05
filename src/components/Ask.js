@@ -49,7 +49,7 @@ const Ask = () => {
                     <div className='para_ask'>
                         Précisez les techno que vous avez utilisés. 
                     </div>
-                    <input type="texte" placeholder="Techno" /> 
+                    <input type="texte" placeholder="Technologie" id='titre_techno_ask'/>
                 </div>
             </div>
         </div>
