@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional} from '@nestjs/swagger'
 import { ObjectID } from 'typeorm';
 
 export class UserUpdateDTO {
-    @ApiProperty({
+    @ApiPropertyOptional({
 		example: 'Jhon',
 		description: 'Name of the user',
 	})
@@ -21,7 +21,7 @@ export class UserUpdateDTO {
     @IsNotEmpty()
     lastName?: string;
 
-    @ApiProperty({
+    @ApiPropertyOptional({
 		example: 'Jhon.doe@gmail.com',
 		description: 'Email. Unique (identifier) for every user',
 	})
@@ -30,7 +30,7 @@ export class UserUpdateDTO {
     @IsEmail()
     email?: string;
 
-    @ApiProperty({
+    @ApiPropertyOptional({
 		example: '507f191e',
 		description: 'Password of user, minimun of 8 char',
 	})    
@@ -39,7 +39,7 @@ export class UserUpdateDTO {
     @MinLength(8)
     password?: string;
     
-    @ApiProperty({
+    @ApiPropertyOptional({
 		example: 'L1',
 		description: 'Niveau of student',
 	})    
@@ -47,7 +47,15 @@ export class UserUpdateDTO {
     @IsString()
     niveau?: string; 
 
-    @ApiProperty({
+    @ApiPropertyOptional({
+      example: 'f2',
+      description: 'picture name',
+    })    
+      @IsOptional()
+      @IsString()
+      image?: string; 
+
+    @ApiPropertyOptional({
 		example: '21',
 		description: 'Reputation level of student',
 	})       

@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectID, Repository } from 'typeorm';
+import { MongoRepository, ObjectID, Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { v4 as uuid } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
@@ -17,12 +17,39 @@ import { UserUpdateDTO } from './dto/userUpdate.dto';
 export class UserService {
     constructor(
         @InjectRepository(User)
-        private userFabRepository: Repository<User>,          
+        private userFabRepository: MongoRepository<User>,          
         private jwtService: JwtService,  
       ) {}
 
       getAllUsers(): Promise<User[]> {
         return this.userFabRepository.find();
+      }
+
+      async getUserByName(name: string): Promise<User[]>{
+        const user = await this.userFabRepository.find({where: {
+                  $or: [
+                  {firstName: {'$regex': name, '$options': 'i'}},
+                  {lastName: {'$regex': name, '$options': 'i'}}
+              ]
+            }
+          })
+        return user;
+      }
+
+      async getUserByMatriculate(matriculate: string): Promise<User[]>{
+        const user = await this.userFabRepository.find({where: {                  
+                  matricule: {'$regex': matriculate, '$options': 'i'}               
+              }
+          })
+        return user;
+      }
+
+      async getUserByNiveau(niveau: string): Promise<User[]>{
+        const user = await this.userFabRepository.find({where: {                  
+                  niveau: {'$regex': niveau, '$options': 'i'}               
+              }
+          })
+        return user;
       }
 
       async getUserByID(id: ObjectID): Promise<User | null> {
@@ -35,14 +62,6 @@ export class UserService {
 
       async getUserByEmail(email: string): Promise<User | null> {
         const user = await this.userFabRepository.findOne({where: {email}})
-        if (user){          
-          return user
-        }
-        return null
-      }
-
-      async getUserByMatricule(matricule: string): Promise<User | null> {
-        const user = await this.userFabRepository.findOne({where: {matricule}})
         if (user){          
           return user
         }

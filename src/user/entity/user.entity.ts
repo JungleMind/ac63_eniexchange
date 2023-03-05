@@ -30,6 +30,9 @@ export class User {
   @Column()
   reputation: number;
 
+  @Column({default: 'f1'})
+  image: string = 'f1';
+
   @CreateDateColumn()
   createdAt: Date;
   

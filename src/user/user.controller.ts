@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post, Query, Req, Res } from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ObjectID } from 'typeorm';
 import { Request, Response } from 'express';
 import { userFormDTO } from './dto/userForm.dto';
@@ -14,6 +14,46 @@ export class UserController {
 
     @Get()
     //DOCUMENTATION
+    @ApiOperation({summary:'Get user by name or all users'})
+    @ApiQuery({name: 'name', required: false})
+    @ApiResponse({
+        status: 200,
+        description: 'Ok, no error'
+    })
+    @ApiResponse({
+        status: 500,
+        description: 'Internal server error'
+    })
+    //END DOCUMENTATION
+    getUsers(
+        @Query('name') name?: string
+    ) {
+        if(!name || name.length <= 0){
+            return this.userService.getAllUsers();
+        }
+        return this.userService.getUserByName(name);
+    }
+
+    @Get('/matriculate/')
+    //DOCUMENTATION
+    @ApiOperation({summary:'Get users by matriculate'})
+    @ApiResponse({
+        status: 200,
+        description: 'Ok, no error'
+    })
+    @ApiResponse({
+        status: 500,
+        description: 'Internal server error'
+    })
+    //END DOCUMENTATION
+    getUserByMatriculate(
+        @Query('matriculate') matriculate: string
+    ) {
+        return this.userService.getUserByMatriculate(matriculate);
+    }
+
+    @Get('/niveau/')
+    //DOCUMENTATION
     @ApiOperation({summary:'Get all users'})
     @ApiResponse({
         status: 200,
@@ -24,8 +64,10 @@ export class UserController {
         description: 'Internal server error'
     })
     //END DOCUMENTATION
-    getAllUser() {
-        return this.userService.getAllUsers()
+    getUserByNiveau(
+        @Query('niveau') niveau: string
+    ) {
+        return this.userService.getUserByNiveau(niveau);
     }
 
     @Get('/:id')
