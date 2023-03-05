@@ -123,9 +123,12 @@ export class UserService {
         if(!user.activatedAccount){
           throw new HttpException("Please activate your account first", 400);
         }
-        console.log(user);
         const {password, ...payload} = user;
-        return { access_token: this.jwtService.sign(payload) };
+        console.log(user);
+        return { 
+          access_token: this.jwtService.sign(payload),
+          user
+        };
       }
 
       async updateUser(userId: ObjectID, userUpdateDto: UserUpdateDTO) : Promise<User | null> {

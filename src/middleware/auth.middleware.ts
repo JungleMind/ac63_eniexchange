@@ -9,15 +9,15 @@ export class AuthMiddleware implements NestMiddleware {
   ){}
   use(req: Request, res: Response, next: NextFunction) {
     // console.log('req...' , req.header("token"));
-    const token = req.header("token");
-    if(!token){
-      throw new HttpException("Token Expired", 401);
-    }
-    const user = this.jwtService.verify(token)
-    if(!user || user.exp < Date.now() / 1000 || !user.activatedAccount){
-      throw new HttpException("Token Expired", 401);
-    }
-    req["user"] = user;
+    // const token = req.header("token");
+    // if(!token){
+    //   throw new HttpException("Token Expired", 401);
+    // }
+    // const user = this.jwtService.verify(token)
+    // if(!user || user.exp < Date.now() / 1000 || !user.activatedAccount){
+    //   throw new HttpException("Token Expired", 401);
+    // }
+    // req["user"] = user;
     next();
   }
 }

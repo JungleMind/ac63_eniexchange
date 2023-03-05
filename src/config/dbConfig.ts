@@ -1,6 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'; 
 
-
 export const dbConfig: TypeOrmModuleOptions = {
 	type: 'mongodb',
 	url: process.env.DB_URL_STRING,
