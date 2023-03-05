@@ -163,7 +163,7 @@ const Register = () => {
 		await(verifyEmailApi(dispatch(verifyEmailUser({ userData }))))
             .then(() => {
                 setLoading(false);
-                navigate('/Login');
+                navigate('/');
             });
     }
     

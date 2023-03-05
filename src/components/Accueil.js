@@ -268,7 +268,7 @@ const Accueil = () =>{
                                         <div className='liste_question'>
 
                                         {
-                                            myquest.length != 0 && myquest.map((myq,index)=>{
+                                            myquest.length != 0 && myquest.map((myq,index)=>{ 
                                             <div className='question_box'>
                                                 <div className='tete_kely'>
                                                     <div className='qb_reponse'>
