@@ -3,10 +3,10 @@
 
 ## Installation du backend
 
-  1 - Cloner la branch backend du projet avec la commande : 
+  1 - Cloner la branch backend du projet avec la commande : </br>
     <strong> git clone --branch backend https://github.com/JungleMind/ac63_eniexchange/tree/backend</strong>
 
-  2 - Lancer la commande d'installation des dépandances : 
+  2 - Lancer la commande d'installation des dépandances : </br>
     <strong> npm install </strong>
 
   3 - Renommer le fichier '.env.example' en '.env' et modifier les informations, pour les informations concernant les champs smtp, 
@@ -16,7 +16,7 @@
   
   4 - Lancer mongoDB compass, veuillez vous assurer que votre service mongod est fonctionnel: <a href="https://www.mongodb.com/docs/manual/tutorial/manage-mongodb-processes/">docs</a>
 
-  5 - Lancer le serveur backend avec la commande : 
+  5 - Lancer le serveur backend avec la commande : </br>
     <strong> npm run start:dev </strong>
 
 ## Auteurs
