@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
 import '../css/nav.css';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { IoMdNotificationsOutline } from "react-icons/io";
 import avatar from '../images/avatar.png' 
 
 
 const Nav = () =>{
+    const navigate = useNavigate();
     return(
         <>
         <header>
@@ -35,7 +36,14 @@ const Nav = () =>{
                 <div className='icon_notif_nav'>
                     <IoMdNotificationsOutline  size={25}/>
                 </div>
-                <div className='menu_profil_nav'>
+                <div className='menu_profil_nav' onClick={()=>{
+                    if (window.confirm("Vous allez vous déconnecter")) {
+                        localStorage.setItem('user', null);
+                        localStorage.setItem('accessToken', null);
+                        localStorage.setItem('isSignedIn', false);
+                        navigate('/');
+                    }
+                }}>
                     <img src={avatar} alt="Utilisateurs"/>
                 </div>
             </div>

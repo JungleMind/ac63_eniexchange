@@ -14,9 +14,10 @@ const style = {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignContent: 'flex-start',
-    border: '1px solid black',
+    borderTop: '1px solid rgba(90,90,90,0.5)',
     width: '100%',
     paddingLeft: '20px',
     paddingRight: '20px',
     textAlign: 'left',
+    paddingTop:'20px'
 }

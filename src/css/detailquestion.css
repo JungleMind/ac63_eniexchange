@@ -57,14 +57,14 @@
 }
 
 .container_right_detail{
-    width:75%;
-    border:1px solid aqua;
+    width:45%;
+    /* border:1px solid aqua; */
     height:500px;
     padding-top: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
-    flex-direction: row;
+    flex-direction: column;
  
 }
 
@@ -81,16 +81,110 @@
 }
 
 .vote_detail{
-    border:1px solid red;
+    /* border:1px solid red; */
     width:20%;
 }
 
 .content_detail{
-    border:1px solid yellowgreen;
-    width:80%;
+    border:1px solid grey;
+    width:100%;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     text-align: left;
+    flex-direction: row;
+    height: 500px;
+    overflow: scroll;
+}
+
+.box_detail{
+    border:1px solid rgba(90,90,90,0.2);
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    /* padding-left: 15px; */
+    /* padding-top: 15px;
+    padding-bottom: 15px; */
+    margin-bottom: 25px;
+    margin-top: 10px;
+    
+}
+
+.details_details_detail{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border:1px solid  rgba(90,90,90,0.2);
+}
+
+.soratra_details_detail{
+    /* font-size: 14px; */
+    /* color:rgba(90,90,90,0.8); */
+}
+
+.textedit_detail{
+    /* border:1px solid blue; */
+    width:30%;
+    /* border:1px solid aqua; */
+    height:500px;
+    padding-top: 45px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.boite_ask_detail{
+   
+    /* border:1px solid yellowgreen; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 35px;
+    width:80%;
+    margin-top: 30px;
+    margin-left: 15px;
+
+}
+
+.poster_detail{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:#071b40;
+    width:100px;
+    height:45px;
+    color: white;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 25px;
+    font-size: 14px;
+}
+
+.annulerpost_detail{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:white;
+    border:1px solid rgba(90, 90, 90,0.5);
+    width:100px;
+    height:45px;
+    color: Black;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#boutonask_detail{
     flex-direction: row;
 }

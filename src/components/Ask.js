@@ -5,7 +5,7 @@ import ask from '../images/ask.png'
 import {BsEmojiWink } from "react-icons/bs";
 import TextEditor from './TextEditor';
 import axios from 'axios'
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 
 
 const Ask = () => {
@@ -13,6 +13,7 @@ const Ask = () => {
     const [content,setContent] = useState("");
     const [technology,setTechnology] = useState("");
     const [userid,setUserid] = useState(localStorage.getItem('user'))
+    const navigate = useNavigate();
 
     const questData = {
         questionTitle: questionTitle,
@@ -26,6 +27,7 @@ const Ask = () => {
                 console.log(response.error)
             } else if(response.status === 201) {
                 console.log(response.data)
+                navigate('/detailquestion/'+response.data._id);
             }
         });
     }
