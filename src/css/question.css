@@ -146,7 +146,7 @@
 }
 
 .nom_resolu_questions{
-    width:20%;
+    width:50%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

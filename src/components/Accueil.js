@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 import Nav from "./Nav";
 import '../css/accueil.css';
 import { MdOutlineSummarize,MdQuestionMark,MdOutlineQuestionAnswer,MdStarOutline,MdInfoOutline } from "react-icons/md";
-import maharo from "../images/Maharo.png"
 import avatar from '../images/avatar.png' 
+import { Link } from 'react-router-dom';
 
 const Accueil = () =>{
     const [showapercu,setShowapercu] =useState(true);
@@ -229,9 +229,12 @@ const Accueil = () =>{
                                         <div className='detail_question'>
                                             Soyez précis et imaginez que vous posez une question à une autre personne.
                                         </div>
-                                        <div className='btn_add_question'>
-                                            Nouvelle question
-                                        </div>
+                                        <Link className='link' to="/question">
+                                            <div className='btn_add_question'>
+                                                Nouvelle question
+                                            </div>
+                                        </Link>
+                                        
                                     </div>
                                 </div>
                             ) 

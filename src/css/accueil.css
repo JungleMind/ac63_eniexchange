@@ -266,7 +266,7 @@
 
 .btn_add_question{
     font-size: 14px;
-    width:60%;
+    width:150px;
     height:40px;
     background-color: #071b40;
     color:white;
@@ -408,6 +408,9 @@
     cursor: pointer;
 }
 
+.link{
+    text-decoration: none;
+}
 
 
 

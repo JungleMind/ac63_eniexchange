@@ -1,11 +1,47 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Nav from "./Nav";
 import '../css/question.css';
 import {BsPerson,BsEmojiSunglasses,BsSearch } from "react-icons/bs";
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 
 
 const Question = () => {
+    const [question_list,setQuestion_list] = useState([]);
+
+
+    const loadDataquestions = async()=>{
+        const response = await axios.get("http://localhost:6969/api/question");
+        setQuestion_list(response.data);
+     }
+  
+     useEffect(() => {
+        getAllquestions();
+       loadDataquestions();
+     }, []);
+
+    const getAllquestions = ()=> {
+        axios.get("http://localhost:6969/api/question").then(function (response) {
+          if (response.status === 200) {
+            setQuestion_list(response.data);
+            console.log(JSON.stringify(response.data))
+          } else {
+            console.log("Vous n'êtes pas autorisé à accéder à cette page!");
+          }
+        });
+      }
+
+    // const getUserById = async(id)=>{
+
+    //     const response =  await axios.get("http://localhost:6969/api/user/"+id);
+    //     console.log(JSON.stringify(response.data)) 
+    //     return(
+    //         <div>
+                
+    //         </div>
+    //     )
+        
+    //  }
   return (
     <div>
         <Nav />
@@ -44,90 +80,50 @@ const Question = () => {
                 </div>
                 <div className='container_right_quest'>
                     <div className='nbr_questions'>
-                        120,562 questions
+                        {question_list.length} questions
                     </div>
                     <div className='liste_toutes_questions'>
+                    {question_list.length != 0 &&  question_list.map((question,index) =>  
+                        (
                         <div className='question_box_questions'>
                             <div className='tete_kely_questions'>
                                 <div className='qb_reponse_questions'>
-                                    4 votes | 6 réponses 
+                                {question.voteTotal} votes | {question.answers == null ? '0' : question.answers } réponses 
                                 </div>
-                                <div className='qb_resolu_questions'>
-                                    <b style={{color:"rgb(0,127,0)"}}>Résolue</b>
-                                </div>          
+                                    {
+                                        question.resolu &&(
+                                            <div className='qb_resolu_questions'>
+                                                <b style={{color:"rgb(0,127,0)"}}>Résolue</b>
+                                            </div>  
+                                        )
+                                    }
+       
                             </div> 
                             <div className='qb_titre_questions'>
-                                <b>Generate graph from a list of connected components</b>
+                                <b>{question.questionTitle}</b>
                             </div>
                             <div className='qb_techno_questions'>
-                                <div className='techno_style_questions'>Javascript</div>
+                                <div className='techno_style_questions'>{typeof(question.technology)}</div>
+                                
+                                {
+                                    // techo_map(question.technology)
+                                }
+                                {/* <div className='techno_style_questions'>Javascript</div>
                                 <div className='techno_style_questions'>Html</div>
-                                <div className='techno_style_questions'>Css</div>
+                                <div className='techno_style_questions'>Css</div> */}
                             </div>
                             <div className='qb_nom_questions'>
                                 <div className='nom_res_questions'>
                                     <BsPerson size={15}/>
-                                    Garabs_Kely
+                                    {/* {getUserById(question.questionAuthorId)} */}
                                 </div>
                                 <div className='nom_resolu_questions'>
-                                    02-02-2023
+                                    {question.createdAt}
                                 </div> 
                             </div>
                         </div>
-                        <div className='question_box_questions'>
-                            <div className='tete_kely_questions'>
-                                <div className='qb_reponse_questions'>
-                                    4 votes | 6 réponses 
-                                </div>
-                                <div className='qb_resolu_questions'>
-                                    
-                                </div>          
-                            </div> 
-                            <div className='qb_titre_questions'>
-                                <b>Generate graph from a list of connected components</b>
-                            </div>
-                            <div className='qb_techno_questions'>
-                                <div className='techno_style_questions'>Javascript</div>
-                                <div className='techno_style_questions'>Html</div>
-                                <div className='techno_style_questions'>Css</div>
-                            </div>
-                            <div className='qb_nom_questions'>
-                                <div className='nom_res_questions'>
-                                    <BsPerson size={15}/>
-                                    Garabs_Kely
-                                </div>
-                                <div className='nom_resolu_questions'>
-                                    02-02-2023
-                                </div> 
-                            </div>
-                        </div>
-                        <div className='question_box_questions'>
-                            <div className='tete_kely_questions'>
-                                <div className='qb_reponse_questions'>
-                                    4 votes | 6 réponses 
-                                </div>
-                                <div className='qb_resolu_questions'>
-                                    <b style={{color:"rgb(0,127,0)"}}>Résolue</b>
-                                </div>          
-                            </div> 
-                            <div className='qb_titre_questions'>
-                                <b>Generate graph from a list of connected components</b>
-                            </div>
-                            <div className='qb_techno_questions'>
-                                <div className='techno_style_questions'>Javascript</div>
-                                <div className='techno_style_questions'>Html</div>
-                                <div className='techno_style_questions'>Css</div>
-                            </div>
-                            <div className='qb_nom_questions'>
-                                <div className='nom_res_questions'>
-                                    <BsPerson size={15}/>
-                                    Garabs_Kely
-                                </div>
-                                <div className='nom_resolu_questions'>
-                                    02-02-2023
-                                </div> 
-                            </div>
-                        </div>
+                    ))}
+                        
                     </div>
                 </div>
             </div>

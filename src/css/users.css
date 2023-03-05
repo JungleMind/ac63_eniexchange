@@ -27,12 +27,12 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    margin-top: 10px;
     /* margin-left:50px; */
-    height:60%;
-    width:455px;
+    height:95%;
+    width:50%;
     border:1px solid rgba(90, 90, 90,0.2);
-    margin-top: 15px;
-    margin-bottom: 12px;
+
 }
 
 .rechercher_users input{
@@ -45,6 +45,7 @@
 }
 #search_icon_users{
     margin-right:20px;
+    cursor: pointer;
 }
 
 .middle_users{
@@ -61,6 +62,9 @@
     padding-right: 3%;
     height:500px;
     padding-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .right_users{
@@ -73,15 +77,16 @@
 
 .users_sary{
     width:100%;
-    height:300px;
+    /* height:300px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top:-10%;;
 }
 
 .users_sary img{
-    height: 265px;
+    height: 150px;
 }
 
 .avatar_users{
@@ -92,11 +97,12 @@
     justify-content:center ;
     align-items: center;
     cursor: pointer;
+
     /* border:1px solid rgba(90, 90, 90,0.2); */
 }
 
 .avatar_users img{
-    height: 70px;
+    height:50px;
 }
 
 .boite_users{
@@ -132,6 +138,45 @@
     flex-direction: row;
     flex-wrap: wrap;
     width:80%;
+}
 
+.filtre_container_users{
+    /* border:1px solid black; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height:80px;
+    margin-bottom:20px ;
+    width:100%;
+}
 
+.menu_users{
+    margin-top: 10px;
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    height:70px;
+
+    background-color: white;
+    border-bottom:1px solid rgba(90, 90, 90,0.2);
+    /* border:1px solid green; */
+}
+
+.menu_items_users{
+    width:100px;
+    cursor: pointer;
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-bottom: 10px;
+    /* border:1px solid green; */
+    font-size: 14px;
+    /* border:1px solid green; */
+}
+
+.icon_items_users{
+    margin-right: 5px;
 }
