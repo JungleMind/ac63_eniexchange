@@ -19,6 +19,7 @@ export default class TextEditor extends Component {
     const {editorState} = this.state;
     // console.log(convertToRaw(editorState.getCurrentContent()))
     let html = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+    this.props.getContent(html);
     // this.props.x = html;
     // console.log(html)
     return (
