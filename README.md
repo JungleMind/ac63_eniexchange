@@ -12,8 +12,6 @@
   3 Renommer le fichier '.env.example' en '.env' et modifier les informations, pour les informations concernant les champs smtp, 
     il vous faudra creer compte sur <a href="https://sendgrid.com/">sendgrid</a> et creer un compte qui vous servira pour envoyer des emails automatiques qui contiendront les codes d'activation des comptes d'utilisateurs.
     Voici un <a href="https://docs.sendgrid.com/fr/for-developers/sending-email/api-getting-started">lien</a> vers la documentation de sendGrid.
-
-    <i> Si vous avez des problèmes sur ce point, ne vous inquiètez pas, vous pouvez quand meme lancer le serveur backend et consulter la console pour récupérer le code d'activation décodé, pour activer votre compte utilisateur. </i>
   
   4 Lancer mongoDB compass, veuillez vous assurer que votre service mongod est fonctionnel: <a href="https://www.mongodb.com/docs/manual/tutorial/manage-mongodb-processes/">docs</a>
 
