@@ -1,11 +1,38 @@
-import React from 'react'
+import React, {useState,useEffect} from 'react'
 import Nav from "./Nav";
 import '../css/detailquestion.css';
 import { MdOutlineSummarize,MdQuestionMark,MdOutlineQuestionAnswer,MdStarOutline,MdInfoOutline } from "react-icons/md";
-import { Link } from 'react-router-dom';
-import axios from 'axios'
+import { AiOutlineLike,AiOutlineDislike } from "react-icons/ai";
 
-const Detailquestion = () => {
+import { Link,useParams } from 'react-router-dom';
+import axios from 'axios'
+import HtmlContent from './HtmlContent';
+
+const Detailquestion = () => {    
+    const params = useParams();
+    const {id} = params; 
+    const [detail,setDetail]= useState([]) 
+    
+    const loadDataDetails = async()=>{
+        const response = await axios.get("http://localhost:6969/api/question/"+id);
+        setDetail(response.data)
+     }
+
+    useEffect(() => {
+        getQuestionDetailsById()
+        loadDataDetails()
+     }, []);
+    
+    const getQuestionDetailsById= ()=>{
+        axios.get("http://localhost:6969/api/question/"+id).then(function (response) {
+            if(response.status === 400) {
+                console.log(response.error)
+            } else if(response.status === 200) {
+                console.log(response.data)
+                setDetail(response.data)
+            }
+        });
+    }
   return (
     <div>
         <Nav />
@@ -13,7 +40,7 @@ const Detailquestion = () => {
             <div className='entete_detail'>
                     <div className='toutes_les_detail'>
                         <div>
-                            Why did Bootstrap5 Carousel action is not working
+                            {detail.questionTitle}                       
                         </div>
                         
                     </div>
@@ -37,6 +64,20 @@ const Detailquestion = () => {
                     </div>
                 </div>
                 <div className='container_right_detail'>
+                    <div className='vote_detail'>
+                        <div>
+                            <AiOutlineLike className='icon_items_acc' size={30}/>
+                        </div>
+                        <div>
+                            0
+                        </div>
+                        <div>
+                            <AiOutlineDislike className='icon_items_acc' size={30}/>
+                        </div>
+                    </div>
+                    <div className='content_detail'>
+                        <HtmlContent content= {detail.content}/>
+                    </div>
                 </div>
             </div>
         </div>

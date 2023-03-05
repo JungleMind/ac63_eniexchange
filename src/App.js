@@ -57,7 +57,7 @@ function App() {
             } 
           />
            <Route 
-            path="detailquestion" 
+            path="detailquestion/:id" 
             element={
               <Protected isSignedIn={isSignedIn}>
                 <Detailquestion />

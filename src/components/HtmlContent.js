@@ -9,5 +9,14 @@ export default function HtmlContent(props) {
 }
 
 const style = {
-    backgroundColor: '#B0AEAEA3',
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignContent: 'flex-start',
+    border: '1px solid black',
+    width: '100%',
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    textAlign: 'left',
 }

@@ -85,7 +85,7 @@ const Question = () => {
                     <div className='liste_toutes_questions'>
                     {question_list.length != 0 &&  question_list.map((question,index) =>  
                         (
-                            <Link className='link' to="/detailquestion">
+                            <Link className='link' to={"/detailquestion/" + question._id}>
                                 <div className='question_box_questions' >
                                 <div className='tete_kely_questions'>
                                     <div className='qb_reponse_questions'>

@@ -58,9 +58,13 @@
 
 .container_right_detail{
     width:75%;
-    /* border:1px solid aqua; */
+    border:1px solid aqua;
     height:500px;
     padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
  
 }
 
@@ -72,5 +76,21 @@
 
 .detail_score_rep_detail{
     font-size: 14px;
-    /* text-align: left; */
+    /* text-
+    align: left; */
+}
+
+.vote_detail{
+    border:1px solid red;
+    width:20%;
+}
+
+.content_detail{
+    border:1px solid yellowgreen;
+    width:80%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: row;
 }
