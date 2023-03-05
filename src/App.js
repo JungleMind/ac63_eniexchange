@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './components/Login';
-import Register from './components/Register';
+import Register from './pages/Register';
 import Accueil from './components/Accueil';
 import "./fonts/Long_Shot.ttf";
 import "./fonts/Louis George Cafe Light.ttf";
