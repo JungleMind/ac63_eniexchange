@@ -4,7 +4,7 @@
 ## Installation du backend
 
   1 - Cloner la branch backend du projet avec la commande : </br>
-    -> git clone --branch backend https://github.com/JungleMind/ac63_eniexchange/tree/backend
+    <strong> git clone --branch backend https://github.com/JungleMind/ac63_eniexchange/tree/backend </strong>
 
   2 - Lancer la commande d'installation des dépandances : </br>
     <strong> npm install </strong>
