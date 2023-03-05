@@ -1,4 +1,4 @@
-### `git clone --branch frontend `
+### `git clone --branch frontend https://github.com/JungleMind/ac63_eniexchange.git`
 Cloner la partie frontend de l'application
 
 ## Installation packages
