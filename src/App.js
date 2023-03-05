@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './components/Login';
 import Register from './components/Register';
 import Accueil from './components/Accueil';
+import Question from './components/Question';
+import Ask from './components/Ask';
+import Users from './components/Users';
 import "./fonts/Long_Shot.ttf";
 import "./fonts/Louis George Cafe Light.ttf";
 import "./fonts/Louis George Cafe.ttf";
@@ -18,6 +21,9 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="accueil" element={<Accueil />} />
+          <Route path="question" element={<Question />} />
+          <Route path="demander" element={<Ask />} />
+          <Route path="utilisateurs" element={<Users />} />
         </Routes>
       </BrowserRouter>
     </div>

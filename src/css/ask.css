@@ -1,0 +1,96 @@
+.entete_ask{
+    margin-top: 10px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    height:70px;
+    padding-left: 25%;
+    padding-right: 3%;
+    background-color: white;
+    border-bottom:1px solid rgba(90, 90, 90,0.2);
+}
+
+.toutes_les_ask{
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    height: 45px;
+    /* border:1px solid yellow; */
+    
+}
+
+.middle_ask{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.left_ask{
+    width:25%;
+    border:1px solid pink;
+    padding-left: 3%;
+    padding-right: 3%;
+    height:500px;
+    padding-top: 30px;
+}
+
+.right_ask{
+    width:75%;
+    border:1px solid aqua;
+    height:500px;
+    padding-top: 30px;
+ 
+}
+
+.ask_sary{
+    width:100%;
+    height:300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ask_sary img{
+    height: 300px;
+}
+
+.boite_ask{
+   
+    border:1px solid yellowgreen;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 35px;
+    width:80%;
+
+}
+
+.titre_ask{
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.para_ask{
+    font-size: 14px;
+    color:rgba(90, 90, 90,0.7);
+}
+#emoji_wink{
+    margin-left: 5px;
+    color: green;
+}
+
+#titre_titre_ask{
+    margin-top: 10px;
+    width:100%;
+    height:50px;
+    border-radius: 5px;
+    border:1px solid rgba(90, 90, 90,0.2);
+    padding-left: 10px;
+    font-size: 14px;
+}

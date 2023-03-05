@@ -3,6 +3,7 @@ import Nav from "./Nav";
 import '../css/accueil.css';
 import { MdOutlineSummarize,MdQuestionMark,MdOutlineQuestionAnswer,MdStarOutline,MdInfoOutline } from "react-icons/md";
 import maharo from "../images/Maharo.png"
+import avatar from '../images/avatar.png' 
 
 const Accueil = () =>{
     const [showapercu,setShowapercu] =useState(true);
@@ -10,10 +11,12 @@ const Accueil = () =>{
     const [showanswer,setShowanswer] =useState(false);
     const [showreputation,setShowreputation] =useState(false);
 
-    const [borderapercu,setBorderapercu] = useState("2px solid green");
-    const [borderquestion,setBorderquestion] = useState("none");
-    const [borderanswer,setBorderanswer] = useState("none");
-    const [borderrep,setBorderrep] = useState("none");
+    const [borderapercu,setBorderapercu] = useState("3px solid green");
+    const [borderquestion,setBorderquestion] = useState("3px solid transparent");
+    const [borderanswer,setBorderanswer] = useState("3px solid transparent");
+    const [borderrep,setBorderrep] = useState("3px solid transparent");
+
+    const [edit,setEdit] = useState(false)
 
 
     return(
@@ -25,23 +28,68 @@ const Accueil = () =>{
                         className='menu_items_acc' 
                         style={{borderBottom:borderapercu}} 
                         onClick={()=>{
-                            setBorderapercu("none");
-                            setBorderquestion("2px solid green");
-                            setBorderanswer("2px solid green");
-                            setBorderrep("2px solid green");
+                            setBorderapercu("3px solid green");
+                            setBorderquestion("3px solid transparent");
+                            setBorderanswer("3px solid transparent");
+                            setBorderrep("3px solid transparent");
+
+                            setShowapercu(true)
+                            setShowquestion(false)
+                            setShowanswer(false)
+                            setShowreputation(false)
+
                     }}>
                         <MdOutlineSummarize className='icon_items_acc' size={15}/>
                         Aperçu
                     </div>
-                    <div className='menu_items_acc' style={{borderBottom:borderquestion}}>
+                    <div 
+                        className='menu_items_acc' 
+                        style={{borderBottom:borderquestion}}  
+                        onClick={()=>{
+                            setBorderapercu("3px solid transparent");
+                            setBorderquestion("3px solid green");
+                            setBorderanswer("3px solid transparent");
+                            setBorderrep("3px solid transparent");
+
+                            setShowapercu(false)
+                            setShowquestion(true)
+                            setShowanswer(false)
+                            setShowreputation(false)
+                        }}>
                         <MdQuestionMark className='icon_items_acc' size={15}/>
                         Questions
                     </div>
-                    <div className='menu_items_acc' style={{borderBottom:borderanswer}}>
+                    <div className='menu_items_acc' 
+                    style={{borderBottom:borderanswer}}
+                    onClick={()=>{
+                        setBorderapercu("3px solid transparent");
+                        setBorderquestion("3px solid transparent");
+                        setBorderanswer("3px solid green");
+                        setBorderrep("3px solid transparent");
+
+                        setShowapercu(false)
+                        setShowquestion(false)
+                        setShowanswer(true)
+                        setShowreputation(false)
+                    }}>
+                    
+                    
                         <MdOutlineQuestionAnswer className='icon_items_acc' size={15}/>
                         Réponses
                     </div>
-                    <div className='menu_items_acc' style={{borderBottom:borderrep}}>
+                    <div className='menu_items_acc' style={{borderBottom:borderrep}}
+                    onClick={()=>{
+                        setBorderapercu("3px solid transparent");
+                        setBorderquestion("3px solid transparent");
+                        setBorderanswer("3px solid transparent");
+                        setBorderrep("3px solid green");
+
+                        setShowapercu(false)
+                        setShowquestion(false)
+                        setShowanswer(false)
+                        setShowreputation(true)
+                    }} 
+                    >
                         <MdStarOutline className='icon_items_acc' size={15}/>
                         Réputation
                     </div>
@@ -49,20 +97,69 @@ const Accueil = () =>{
                 <div className='content_acc'>
                     <div className='content_left_acc'>
                         <div className='image_profil_acc'>
-                            <img src={maharo} alt="Photo de profil"/>
+                            <img src={avatar} alt="Photo de profil"/>
                         </div>
-                        <div className='name_profil_acc'>
-                            <div className='nom_acc'>
-                                <b>RAJAONARISON</b>
+                        {
+                            !edit && (
+                                <div>
+                                    <div className='name_profil_acc'>
+                                        <div className='nom_acc'>
+                                            <b>RAJAONARISON</b>
+                                        </div>
+                                        <div>
+                                            <MdInfoOutline className='icon_items_acc' size={15}/>
+                                            809H-F | M2
+                                        </div>
+                                    </div>
+                                    <div className='edit_profil_acc' onClick={()=>setEdit(true)  
+                                     }>
+                                        Modifier les infos
+                                    </div>
+                                </div>
+                            )
+                        }
+                        {
+                            edit && (
+                                <div>
+                                <div className='input_acceuil'>
+                                    <label>Nom</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder='Entrez votre nom'
+                                        id="firstname"
+                                        name="firstname"
+                                        // value={firstname}
+                                        // onChange={handleInputChange}
+                                        required />
+                                </div>
+                                <div className='input_acceuil'>
+                                    <label>Email</label>
+                                    <input 
+                                        type="text" 
+                                        placeholder='Entrez votre email'
+                                        id="email"
+                                        name="email"
+                                        // value={email}
+                                        // onChange={handleInputChange}
+                                        required />
+                                </div>
+                                <div className='btn_enregistrer' >
+                                    <div id='enregistrer' onClick={()=>setEdit(false)}>
+                                        Enregistrer
+                                    </div>
+                                    <div id='annuler' onClick={()=>setEdit(false)}>
+                                        Annuler
+                                    </div>
+
+                                    
+                                </div>
+    
                             </div>
-                            <div>
-                                <MdInfoOutline className='icon_items_acc' size={15}/>
-                                809H-F | M2
-                            </div>
-                        </div>
-                        <div className='edit_profil_acc'>
-                            Modifier les infos
-                        </div>
+                            )
+                        }
+                        
+
+                       
 
                     </div>
                     <div className='content_right_acc'>
@@ -73,8 +170,8 @@ const Accueil = () =>{
                                 <div className='box_acc'>
                                     
                                         <div className='details_details_acc'>
-                                           <div>0</div>
-                                           <div className='soratra_details'>Question</div>
+                                           <div>3</div>
+                                           <div className='soratra_details'>Questions</div>
                                         </div>
                                         <div className='details_details_acc'>
                                            <div>0</div>
@@ -100,24 +197,146 @@ const Accueil = () =>{
 
                         {
                             showquestion && (
-                                <div>
-                                    Question
+                                <div className='content_question'>
+                                    <div className='question_div'> 
+                                    <b>3 questions</b>
+                                    <div className='liste_question'>
+                                    <div className='question_box'>
+                                            <div className='tete_kely'>
+                                                <div className='qb_reponse'>
+                                                    4 votes | 6 réponses
+                                                </div>
+                                                <div className='qb_resolu'>
+                                                    <b style={{color:"rgb(0,127,0)"}}>Résolue</b>
+                                                </div>
+                                                
+                                            </div> 
+                                            <div className='qb_titre'>
+                                                <b>Generate graph from a list of connected components</b>
+                                            </div>
+                                            <div className='qb_techno'>
+                                                <div className='techno_style'>Javascript</div>
+                                                <div className='techno_style'>Html</div>
+                                                <div className='techno_style'>Css</div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div className='ajouter_question'>
+                                        <div className='poser_question_title'>
+                                            Poser une question
+                                        </div>
+                                        <div className='detail_question'>
+                                            Soyez précis et imaginez que vous posez une question à une autre personne.
+                                        </div>
+                                        <div className='btn_add_question'>
+                                            Nouvelle question
+                                        </div>
+                                    </div>
                                 </div>
                             ) 
                         }
 
                         {
                             showanswer && (
-                                <div>
-                                    Réponse
+                                <div className='question_div'> 
+                                    <b>3 réponses</b>
+                                    <div className='liste_question'>
+                                        <div className='question_box'>
+                                            <div className='tete_kely'>
+                                                <div className='qb_reponse'>
+                                                    4 votes
+                                                </div>
+                                                <div className='qb_resolu'>
+                                                    <b style={{color:"rgb(0,127,0)"}}>Accepté</b>
+                                                </div>
+                                                
+                                            </div> 
+                                            <div className='qb_titre'>
+                                                <b>Generate graph from a list of connected components</b>
+                                            </div>
+                                            <div className='qb_techno'>
+                                                <div className='techno_style'>Javascript</div>
+                                                <div className='techno_style'>Html</div>
+                                                <div className='techno_style'>Css</div>
+                                            </div>
+                                        </div>
+                                        <div className='question_box'>
+                                            <div className='tete_kely'>
+                                                <div className='qb_reponse'>
+                                                    4 votes
+                                                </div>
+                                                <div className='qb_resolu'>
+                                                    <b style={{color:"rgb(0,127,0)"}}>Accepté</b>
+                                                </div>
+                                                
+                                            </div> 
+                                            <div className='qb_titre'>
+                                                <b>Generate graph from a list of connected components</b>
+                                            </div>
+                                            <div className='qb_techno'>
+                                                <div className='techno_style'>Javascript</div>
+                                                <div className='techno_style'>Html</div>
+                                                <div className='techno_style'>Css</div>
+                                            </div>
+                                        </div>
+                                        <div className='question_box'>
+                                            <div className='tete_kely'>
+                                                <div className='qb_reponse'>
+                                                    4 votes
+                                                </div>
+                                                <div className='qb_resolu'>
+                                                    <b style={{color:"rgb(0,127,0)"}}>Accepté</b>
+                                                </div>
+                                                
+                                            </div> 
+                                            <div className='qb_titre'>
+                                                <b>Generate graph from a list of connected components</b>
+                                            </div>
+                                            <div className='qb_techno'>
+                                                <div className='techno_style'>Javascript</div>
+                                                <div className='techno_style'>Html</div>
+                                                <div className='techno_style'>Css</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             ) 
                         }
 
                         {
                             showreputation && (
-                                <div>
-                                    Réputation
+                                <div className='fizarana_reputation'>
+                                    <div className='reputation_div'>
+                                        <b>Réputations</b>
+                                        <div className='box_rep'>
+                                                <div className='details_details_rep'>
+                                                <div>3</div>
+                                                <div className='soratra_details'>Réputations</div>
+                                                </div>
+                                                <div className='details_details_rep'>
+                                                <div>0</div>
+                                                <div className='soratra_details'>Votes</div>
+                                                </div> 
+                                        </div>
+                                        <b>Votes</b>
+                                        <div className='box_rep'>
+                                                <div className='details_details_rep'>
+                                                <div>3</div>
+                                                <div className='soratra_details'>Votes pour</div>
+                                                </div>
+                                                <div className='details_details_rep'>
+                                                <div>0</div>
+                                                <div className='soratra_details'>Votes contre</div>
+                                                </div> 
+                                        </div>
+                                    </div>
+                                    <div className='explication_reputation'>
+                                        <b>Augmenter la réputation</b> 
+                                        <div className='box_rep_rep'>
+                                            Votre score de réputation augmente lorsque les autres votent pour vos questions, réponses et modifications.
+                                        </div>
+                                    </div>
                                 </div>
                             ) 
                         }
