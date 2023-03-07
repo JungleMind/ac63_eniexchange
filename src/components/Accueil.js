@@ -58,9 +58,10 @@ const Accueil = () =>{
 
     const getMyQuestions = ()=> {
         axios.get("http://localhost:6969/api/question/MyQuestions/"+userid).then(function (response) {
-            if(response.status === 400) {
+            if(response.status === 500) {
                 console.log(response.error)
-            } else if(response.status === 201) {
+            } else if(response.status === 200) {
+                console.log("QUESTION 6KOOOOOOOOOOOOOOOOOO")
                 console.log(response.data)
                 setMyquest(response.data)
             }
@@ -77,6 +78,8 @@ const Accueil = () =>{
             }
         });
     }
+
+
 
     return(
         <div>
@@ -265,31 +268,40 @@ const Accueil = () =>{
                                 <div className='content_question'>
                                     <div className='question_div'> 
                                         <b>{myquest.length} questions</b>
-                                        <div className='liste_question'>
+                                        <div className='liste_question_acc'>
+                                            {/* {myquest.length != 0 ? 'True' : 'False'} */}
 
                                         {
-                                            myquest.length != 0 && myquest.map((myq,index)=>{ 
-                                            <div className='question_box'>
-                                                <div className='tete_kely'>
-                                                    <div className='qb_reponse'>
+                                            myquest.length != 0 && myquest.map((myq,index)=>(
+                                            <div className='question_box_acc'>
+                                                <div className='tete_kely_acc'>
+                                                    <div className='qb_reponse_acc'>
                                                     {myq.voteTotal} votes | {myq.answers == null ? '0' : myq.answers } réponses 
                                                     </div>
                                                     {
                                                         myq.resolu &&(
-                                                            <div className='qb_resolu_questions'>
+                                                            <div className='qb_resolu_acc'>
                                                                 <b style={{color:"rgb(0,127,0)"}}>Résolue</b>
                                                             </div>  
                                                         )
                                                     }
                                                 </div> 
-                                                <div className='qb_titre'>
+                                                <div className='qb_titre_acc'>
                                                 <b>{myq.questionTitle}</b>
                                                 </div>
-                                                <div className='qb_techno'>
-                                                    <div className='techno_style_questions'>{typeof(myq.technology)}</div>
+                                                <div className='qb_techno_acc'>
+                                                    {
+                                                        myq.technology.length != 0 && myq.technology.map((tech,index)=>(
+                                                            <div className='techno_style_acc'>{tech}</div>
+                                                        ))
+                                                    }
+                                                    
                                                 </div>
                                             </div>
-                                            })
+                                            ))
+                                          
+                                                
+                                            
                                         }
 
                                         {
