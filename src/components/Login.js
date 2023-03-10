@@ -25,20 +25,41 @@ const Login = () =>{
     }
 
     const loginUser = ()=> {
-        axios.post("http://localhost:6969/api/user/login",{email:mail,password:mdp}).then(function (response) {
-            setLoading(true);
-            if(response.status === 400) {
-                setError('Adresse email ou mot de passe incorrecte.')
-                setLoading(false);
-            } else if(response.status === 201) {
-                console.log(response.data)
-                localStorage.setItem('user', response.data.user._id);
-                localStorage.setItem('accessToken', response.data.access_token);
-                localStorage.setItem('isSignedIn', true);
-                setLoading(false);
-                navigate('/accueil');
-            }
-        });
+        if(mail == "" || mdp==""){
+            setError('Veuillez remplir les champs')
+        }
+        else{
+          
+                axios.post("http://localhost:6969/api/user/login",{email:mail,password:mdp}).then(function (response) {
+                    setLoading(true);
+                    if(response.status === 400) {
+                        setError('Adresse email ou mot de passe incorrecte.')
+                        setLoading(false);
+                    } else if(response.status === 201) {
+                        console.log(response.data)
+                        localStorage.clear()
+                        localStorage.setItem('user', response.data.user._id);
+                        localStorage.setItem('accessToken', response.data.access_token);
+                        localStorage.setItem('isSignedIn', true);
+                        setLoading(false);
+                        navigate('/accueil');
+                        
+                    }
+                })
+                .catch((error) => { // error is handled in catch block
+                    if(error.response.status === 400) {
+                            setError('Adresse email ou mot de passe incorrecte.')
+                            setLoading(false);
+                        }
+                    else if(error.response.status === 404) {
+                            setError('Adresse email introuvable.')
+                            setLoading(false);
+                        }
+                  })
+          
+            
+        }
+       
     }
     
     return(

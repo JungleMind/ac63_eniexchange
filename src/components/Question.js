@@ -8,6 +8,7 @@ import axios from 'axios'
 
 const Question = () => {
     const [question_list,setQuestion_list] = useState([]);
+    const [anarana,setAnarana] = useState("")
 
 
     const loadDataquestions = async()=>{
@@ -18,19 +19,34 @@ const Question = () => {
      useEffect(() => {
         getAllquestions();
        loadDataquestions();
+    //    var id = "640479ad26a4840de0660ab4"
+    //    console.log(getUserQuestion(id))
      }, []);
 
     const getAllquestions = ()=> {
         axios.get("http://localhost:6969/api/question").then(function (response) {
           if (response.status === 200) {
             setQuestion_list(response.data);
-            console.log(JSON.stringify(response.data))
+           // console.log(JSON.stringify(response.data))
           } else {
             console.log("Vous n'êtes pas autorisé à accéder à cette page!");
           }
         });
-      }
+    }
 
+    const getUserQuestion =   (id)=>{
+        //  axios.get("http://localhost:6969/api/user/"+id).then((response)=>{
+        //     console.log("ANARAN4LR NANAO PUBLICATION")
+        //     console.log(response.data.firstName)
+        //     // setAnarana(response.data.firstName)
+        // });
+        let prices =  axios.get("http://localhost:6969/api/user/"+id).then(response => response.data.firstName);
+        console.log(prices)
+
+        return 1;
+
+
+    }
     // const getUserById = async(id)=>{
 
     //     const response =  await axios.get("http://localhost:6969/api/user/"+id);
@@ -84,10 +100,13 @@ const Question = () => {
                     </div>
                     <div className='liste_toutes_questions'>
                     {question_list.length != 0 &&  question_list.map((question,index) => {
-                        var username = axios.get("http://localhost:6969/api/user/"+question.questionAuthorId);
-                        console.log(JSON.stringify(username))
-
-
+                        // var username = "";
+                        // axios.get("http://localhost:6969/api/user/"+question.questionAuthorId).then((response)=>{
+                        //     console.log(response.data.firstName)
+                        //     username = response.data.firstName
+                        //     console.log(username)
+                        // });
+                        
                                return(
                                 <Link className='link' to={"/detailquestion/" + question._id}>
                                     <div className='question_box_questions' >
@@ -109,15 +128,15 @@ const Question = () => {
                                     </div>
                                     <div className='qb_techno_questions'>
                                     {
-                                                            question.technology.length != 0 && question.technology.map((tech,index)=>(
-                                                                <div className='techno_style_questions'>{tech}</div>
-                                                            ))
-                                                        }
+                                        question.technology.length != 0 && question.technology.map((tech,index)=>(
+                                            <div className='techno_style_questions'>{tech}</div>
+                                            ))
+                                        }
                                     </div>
                                     <div className='qb_nom_questions'>
                                         <div className='nom_res_questions'>
                                             <BsPerson size={15}/>
-                                            {username.firstName}
+                                            {getUserQuestion(question.questionAuthorId)}
                                         </div>
                                         <div className='nom_resolu_questions'>
                                             {question.createdAt}

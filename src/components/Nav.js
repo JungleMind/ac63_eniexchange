@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import '../css/nav.css';
 import { Link,useNavigate } from 'react-router-dom';
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { AiOutlineLogout } from "react-icons/ai";
+
 import avatar from '../images/avatar.png' 
 
 
@@ -38,13 +40,12 @@ const Nav = () =>{
                 </div>
                 <div className='menu_profil_nav' onClick={()=>{
                     if (window.confirm("Vous allez vous déconnecter")) {
-                        localStorage.setItem('user', null);
-                        localStorage.setItem('accessToken', null);
-                        localStorage.setItem('isSignedIn', false);
+                        localStorage.setItem('user',null)
+                        localStorage.setItem('isSignedIn',false)
                         navigate('/');
                     }
                 }}>
-                    <img src={avatar} alt="Utilisateurs"/>
+                    <AiOutlineLogout  size={23} title="Se déconnecter"/>
                 </div>
             </div>
         </header>
